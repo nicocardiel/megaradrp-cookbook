@@ -1,1 +1,1 @@
-# megaradrp-tutorials
+# megaradrp-cookbook
