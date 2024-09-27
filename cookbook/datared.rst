@@ -1,21 +1,24 @@
+**************
 Data reduction
-==============
+**************
 
 Getting Started
----------------
+===============
 
 The first step to start the data reduction is to activate your
 environment (see details in Section 3.1 and 3.2):
 
 Data organization
------------------
+=================
 
 MEGARA DRP uses its own data organization to work. We need a directory
 named MEGARA, in our example this directory is under data_reduction/:
 
-(megara) bash-3.2$ pwd
 
-/Users/acm/Desktop/data_reduction/MEGARA
+.. code-block:: console
+
+    (megara) bash-3.2$ pwd
+    /Users/acm/Desktop/data_reduction/MEGARA
 
 Under the MEGARA/ directory we need to have the calibration tree with
 the specific name ca3558e3-e50d-4bbc-86bd-da50a0998a48/, which is the
@@ -26,19 +29,15 @@ file named *control.yaml* needed to run the pipeline (see section 5.3;
 note that the *tree* command shown below might not be available in
 certain unix distributions; use “ls” instead).
 
-(megara) bash-3.2$ tree -L 2
-
-.
-
-└── MEGARA
-
-├── M15
-
-├── M71
-
-├── ca3558e3-e50d-4bbc-86bd-da50a0998a48
-
-└── control.yaml
+.. code-block:: console
+    
+    (megara) bash-3.2$ tree -L 2
+    .
+    └── MEGARA
+    ├── M15
+    ├── M71
+    ├── ca3558e3-e50d-4bbc-86bd-da50a0998a48
+    └── control.yaml
 
 The requirements file *control.yaml* contains the path for your MEGARA/
 directory:
@@ -56,188 +55,71 @@ at the corresponding wavelength, i.e. the same format used for
 extinction curves within IRAF. We strongly recommend to use the standard
 extinction curve of the Roque de los Muchachos Observatory.
 
-(megara) bash-3.2$ more control.yaml
+.. code-block:: yaml
 
-version: 1
-
-rootdir: /Users/acm/Desktop/REDUCTION_MEGARA/reduction_GTC_com
-
-products:
-
-MEGARA:
-
-- {id: 2, type: 'ReferenceExtinctionTable', tags: {}, content:
-'extinction_LP.txt'}
-
-requirements:
-
-MEGARA:
-
-default:
-
-MegaraArcCalibration:
-
-- {name: nlines, tags: {vph: LR-U, speclamp: ThAr, insmode: LCB},
-content: [25,25]}
-
-- {name: nlines, tags: {vph: LR-U, speclamp: ThAr, insmode: MOS},
-content: [25,25]}
-
-- {name: nlines, tags: {vph: LR-B, speclamp: ThAr, insmode: LCB},
-content: [10,10,15,5]}
-
-- {name: nlines, tags: {vph: LR-B, speclamp: ThAr, insmode: MOS},
-content: [10,10,15,5]}
-
-- {name: nlines, tags: {vph: LR-V, speclamp: ThAr, insmode: LCB},
-content: [15,5,10,7]}
-
-- {name: nlines, tags: {vph: LR-V, speclamp: ThAr, insmode: MOS},
-content: [15,5,10,7]}
-
-- {name: nlines, tags: {vph: LR-R, speclamp: ThAr, insmode: LCB},
-content: [14,7]}
-
-- {name: nlines, tags: {vph: LR-R, speclamp: ThAr, insmode: MOS},
-content: [14,7]}
-
-- {name: nlines, tags: {vph: LR-I, speclamp: ThAr, insmode: LCB},
-content: [14]}
-
-- {name: nlines, tags: {vph: LR-I, speclamp: ThAr, insmode: MOS},
-content: [14]}
-
-- {name: nlines, tags: {vph: LR-Z, speclamp: ThNe, insmode: LCB},
-content: [14,9]}
-
-- {name: nlines, tags: {vph: LR-Z, speclamp: ThNe, insmode: MOS},
-content: [14,9]}
-
-- {name: nlines, tags: {vph: MR-U, speclamp: ThAr, insmode: LCB},
-content: [8,10]}
-
-- {name: nlines, tags: {vph: MR-U, speclamp: ThAr, insmode: MOS},
-content: [8,10]}
-
-- {name: nlines, tags: {vph: MR-UB, speclamp: ThAr, insmode: LCB},
-content: [20]}
-
-- {name: nlines, tags: {vph: MR-UB, speclamp: ThAr, insmode: MOS},
-content: [20]}
-
-- {name: nlines, tags: {vph: MR-B, speclamp: ThAr, insmode: LCB},
-content: [11]}
-
-- {name: nlines, tags: {vph: MR-B, speclamp: ThAr, insmode: MOS},
-content: [11]}
-
-- {name: nlines, tags: {vph: MR-G, speclamp: ThAr, insmode: LCB},
-content: [10,10,8]}
-
-- {name: nlines, tags: {vph: MR-G, speclamp: ThAr, insmode: MOS},
-content: [10,10,8]}
-
-- {name: nlines, tags: {vph: MR-V, speclamp: ThAr, insmode: LCB},
-content: [13,8]}
-
-- {name: nlines, tags: {vph: MR-V, speclamp: ThAr, insmode: MOS},
-content: [13,8]}
-
-- {name: nlines, tags: {vph: MR-VR, speclamp: ThNe, insmode: LCB},
-content: [14]}
-
-- {name: nlines, tags: {vph: MR-VR, speclamp: ThNe, insmode: MOS},
-content: [14]}
-
-- {name: nlines, tags: {vph: MR-R, speclamp: ThNe, insmode: LCB},
-content: [9]}
-
-- {name: nlines, tags: {vph: MR-R, speclamp: ThNe, insmode: MOS},
-content: [9]}
-
-- {name: nlines, tags: {vph: MR-RI, speclamp: ThNe, insmode: LCB},
-content: [7]}
-
-- {name: nlines, tags: {vph: MR-RI, speclamp: ThNe, insmode: MOS},
-content: [7]}
-
-- {name: nlines, tags: {vph: MR-I, speclamp: ThNe, insmode: LCB},
-content: [5,5,5]}
-
-- {name: nlines, tags: {vph: MR-I, speclamp: ThNe, insmode: MOS},
-content: [5,5,5]}
-
-- {name: nlines, tags: {vph: MR-Z, speclamp: ThNe, insmode: LCB},
-content: [4,5,3]}
-
-- {name: nlines, tags: {vph: MR-Z, speclamp: ThNe, insmode: MOS},
-content: [4,5,3]}
-
-- {name: nlines, tags: {vph: HR-R, speclamp: ThNe, insmode: LCB},
-content: [5]}
-
-- {name: nlines, tags: {vph: HR-R, speclamp: ThNe, insmode: MOS},
-content: [5]}
-
-- {name: nlines, tags: {vph: HR-I, speclamp: ThNe, insmode: LCB},
-content: [10]}
-
-- {name: nlines, tags: {vph: HR-I, speclamp: ThNe, insmode: MOS},
-content: [10]}
-
-- {name: polynomial_degree, tags: {vph: LR-U, speclamp: ThAr}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: LR-B, speclamp: ThAr}, content:
-[5,5]}
-
-- {name: polynomial_degree, tags: {vph: LR-V, speclamp: ThAr}, content:
-[5,5]}
-
-- {name: polynomial_degree, tags: {vph: LR-R, speclamp: ThAr}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: LR-I, speclamp: ThAr}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: LR-Z, speclamp: ThNe}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: MR-U, speclamp: ThAr}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: MR-UB, speclamp: ThAr}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: MR-B, speclamp: ThAr}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: MR-G, speclamp: ThAr}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: MR-V, speclamp: ThAr}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: MR-VR, speclamp: ThNe}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: MR-R, speclamp: ThNe}, content:
-[3,3]}
-
-- {name: polynomial_degree, tags: {vph: MR-RI, speclamp: ThNe}, content:
-[3,3]}
-
-- {name: polynomial_degree, tags: {vph: MR-I, speclamp: ThNe}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: MR-Z, speclamp: ThNe}, content:
-[3,3]}
-
-- {name: polynomial_degree, tags: {vph: HR-R, speclamp: ThNe}, content:
-[3,5]}
-
-- {name: polynomial_degree, tags: {vph: HR-I, speclamp: ThNe}, content:
-[3,5]}
+    version: 1
+    rootdir: /Users/acm/Desktop/REDUCTION_MEGARA/reduction_GTC_com
+    products:
+        MEGARA:
+        - {id: 2, type: 'ReferenceExtinctionTable', tags: {}, content: 'extinction_LP.txt'}
+    requirements:
+        MEGARA:
+            default:
+                MegaraArcCalibration:
+                    - {name: nlines, tags: {vph: LR-U, speclamp: ThAr, insmode: LCB}, content: [25,25]}
+                    - {name: nlines, tags: {vph: LR-U, speclamp: ThAr, insmode: MOS}, content: [25,25]}
+                    - {name: nlines, tags: {vph: LR-B, speclamp: ThAr, insmode: LCB}, content: [10,10,15,5]}
+                    - {name: nlines, tags: {vph: LR-B, speclamp: ThAr, insmode: MOS}, content: [10,10,15,5]}
+                    - {name: nlines, tags: {vph: LR-V, speclamp: ThAr, insmode: LCB}, content: [15,5,10,7]}
+                    - {name: nlines, tags: {vph: LR-V, speclamp: ThAr, insmode: MOS}, content: [15,5,10,7]}
+                    - {name: nlines, tags: {vph: LR-R, speclamp: ThAr, insmode: LCB}, content: [14,7]}
+                    - {name: nlines, tags: {vph: LR-R, speclamp: ThAr, insmode: MOS}, content: [14,7]}
+                    - {name: nlines, tags: {vph: LR-I, speclamp: ThAr, insmode: LCB}, content: [14]}
+                    - {name: nlines, tags: {vph: LR-I, speclamp: ThAr, insmode: MOS}, content: [14]}
+                    - {name: nlines, tags: {vph: LR-Z, speclamp: ThNe, insmode: LCB}, content: [14,9]}
+                    - {name: nlines, tags: {vph: LR-Z, speclamp: ThNe, insmode: MOS}, content: [14,9]}
+                    - {name: nlines, tags: {vph: MR-U, speclamp: ThAr, insmode: LCB}, content: [8,10]}
+                    - {name: nlines, tags: {vph: MR-U, speclamp: ThAr, insmode: MOS}, content: [8,10]}
+                    - {name: nlines, tags: {vph: MR-UB, speclamp: ThAr, insmode: LCB}, content: [20]}
+                    - {name: nlines, tags: {vph: MR-UB, speclamp: ThAr, insmode: MOS}, content: [20]}
+                    - {name: nlines, tags: {vph: MR-B, speclamp: ThAr, insmode: LCB}, content: [11]}
+                    - {name: nlines, tags: {vph: MR-B, speclamp: ThAr, insmode: MOS}, content: [11]}
+                    - {name: nlines, tags: {vph: MR-G, speclamp: ThAr, insmode: LCB}, content: [10,10,8]}
+                    - {name: nlines, tags: {vph: MR-G, speclamp: ThAr, insmode: MOS}, content: [10,10,8]}
+                    - {name: nlines, tags: {vph: MR-V, speclamp: ThAr, insmode: LCB}, content: [13,8]}
+                    - {name: nlines, tags: {vph: MR-V, speclamp: ThAr, insmode: MOS}, content: [13,8]}
+                    - {name: nlines, tags: {vph: MR-VR, speclamp: ThNe, insmode: LCB}, content: [14]}
+                    - {name: nlines, tags: {vph: MR-VR, speclamp: ThNe, insmode: MOS}, content: [14]}
+                    - {name: nlines, tags: {vph: MR-R, speclamp: ThNe, insmode: LCB}, content: [9]}
+                    - {name: nlines, tags: {vph: MR-R, speclamp: ThNe, insmode: MOS}, content: [9]}
+                    - {name: nlines, tags: {vph: MR-RI, speclamp: ThNe, insmode: LCB}, content: [7]}
+                    - {name: nlines, tags: {vph: MR-RI, speclamp: ThNe, insmode: MOS}, content: [7]}
+                    - {name: nlines, tags: {vph: MR-I, speclamp: ThNe, insmode: LCB}, content: [5,5,5]}
+                    - {name: nlines, tags: {vph: MR-I, speclamp: ThNe, insmode: MOS}, content: [5,5,5]}
+                    - {name: nlines, tags: {vph: MR-Z, speclamp: ThNe, insmode: LCB}, content: [4,5,3]}
+                    - {name: nlines, tags: {vph: MR-Z, speclamp: ThNe, insmode: MOS}, content: [4,5,3]}
+                    - {name: nlines, tags: {vph: HR-R, speclamp: ThNe, insmode: LCB}, content: [5]}
+                    - {name: nlines, tags: {vph: HR-R, speclamp: ThNe, insmode: MOS}, content: [5]}
+                    - {name: nlines, tags: {vph: HR-I, speclamp: ThNe, insmode: LCB}, content: [10]}
+                    - {name: nlines, tags: {vph: HR-I, speclamp: ThNe, insmode: MOS}, content: [10]}
+                    - {name: polynomial_degree, tags: {vph: LR-U, speclamp: ThAr}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: LR-B, speclamp: ThAr}, content: [5,5]}
+                    - {name: polynomial_degree, tags: {vph: LR-V, speclamp: ThAr}, content: [5,5]}
+                    - {name: polynomial_degree, tags: {vph: LR-R, speclamp: ThAr}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: LR-I, speclamp: ThAr}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: LR-Z, speclamp: ThNe}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: MR-U, speclamp: ThAr}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: MR-UB, speclamp: ThAr}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: MR-B, speclamp: ThAr}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: MR-G, speclamp: ThAr}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: MR-V, speclamp: ThAr}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: MR-VR, speclamp: ThNe}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: MR-R, speclamp: ThNe}, content: [3,3]}
+                    - {name: polynomial_degree, tags: {vph: MR-RI, speclamp: ThNe}, content: [3,3]}
+                    - {name: polynomial_degree, tags: {vph: MR-I, speclamp: ThNe}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: MR-Z, speclamp: ThNe}, content: [3,3]}
+                    - {name: polynomial_degree, tags: {vph: HR-R, speclamp: ThNe}, content: [3,5]}
+                    - {name: polynomial_degree, tags: {vph: HR-I, speclamp: ThNe}, content: [3,5]}
 
 Another fundamental function of the calibration tree
 (ca3558e3-e50d-4bbc-86bd-da50a0998a48/) is to host the calibration
@@ -530,7 +412,7 @@ M71
 ├── ……
 
 Running a recipe
-----------------
+================
 
 The MEGARA DRP is run through a command line interface provided by
 **numina**.
@@ -547,23 +429,17 @@ The run mode of numina requires:
 
 The observation-result file and the requirements file are created by the
 user. This is an example of the observation result file to compute the
-fibers traces:
+fibers traces `1_tracemap.yaml`
 
-(megara3) bash-3.2$ more 1_tracemap.yaml
+.. code-block:: yaml
 
-id: 1_HR-R
-
-mode: MegaraTraceMap
-
-instrument: MEGARA
-
-frames:
-
-- 0001312246-20170831-MEGARA-MegaraSuccess.fits
-
-- 0001312247-20170831-MEGARA-MegaraSuccess.fits
-
-- 0001312248-20170831-MEGARA-MegaraSuccess.fits
+    id: 1_HR-R
+    mode: MegaraTraceMap
+    instrument: MEGARA
+    frames:
+        - 0001312246-20170831-MEGARA-MegaraSuccess.fits
+        - 0001312247-20170831-MEGARA-MegaraSuccess.fits
+        - 0001312248-20170831-MEGARA-MegaraSuccess.fits
 
 The “\ *id:”* is an identifier of the observing block. The DRP will
 create two directories with the products of the recipe (/obsid_work and
@@ -649,7 +525,7 @@ Other useful numina commands include:
 <block_id>
 
 Data reduction process
-----------------------
+======================
 
 In the following sections the different steps to produce the target
 wavelength and flux calibrated row-stacked spectra (RSS) are detailed.
@@ -678,33 +554,21 @@ _staticn.
 
 This is an example for the *0_bias.yaml*:
 
-(megara) bash-3.2$ more 0_bias.yaml
+.. code-block:: yaml
 
-id: 0_bias
-
-mode: MegaraBiasImage
-
-instrument: MEGARA
-
-frames:
-
-- 0001310880-20170827-MEGARA-MegaraBiasImage.fits
-
-- 0001310881-20170827-MEGARA-MegaraBiasImage.fits
-
-- 0001310882-20170827-MEGARA-MegaraBiasImage.fits
-
-- 0001310883-20170827-MEGARA-MegaraBiasImage.fits
-
-- 0001310884-20170827-MEGARA-MegaraBiasImage.fits
-
-- 0001310885-20170827-MEGARA-MegaraBiasImage.fits
-
-- 0001310886-20170827-MEGARA-MegaraBiasImage.fits
-
-- 0001310887-20170827-MEGARA-MegaraBiasImage.fits
-
-- 0001310888-20170827-MEGARA-MegaraBiasImage.fits
+    id: 0_bias
+    mode: MegaraBiasImage
+    instrument: MEGARA
+    frames:
+    - 0001310880-20170827-MEGARA-MegaraBiasImage.fits
+    - 0001310881-20170827-MEGARA-MegaraBiasImage.fits
+    - 0001310882-20170827-MEGARA-MegaraBiasImage.fits
+    - 0001310883-20170827-MEGARA-MegaraBiasImage.fits
+    - 0001310884-20170827-MEGARA-MegaraBiasImage.fits
+    - 0001310885-20170827-MEGARA-MegaraBiasImage.fits
+    - 0001310886-20170827-MEGARA-MegaraBiasImage.fits
+    - 0001310887-20170827-MEGARA-MegaraBiasImage.fits
+    - 0001310888-20170827-MEGARA-MegaraBiasImage.fits
 
 The recipe is run as follows,
 
@@ -713,7 +577,7 @@ The recipe is run as follows,
 and the products are stored in the directory obsid0_bias_results/,
 including the *master_bias.fits* file (see **Figure 4**). The user needs
 to copy this file to the calibration tree at
-ca3558e3-e50d-4bbc-86bd-da50a0998a48/MasterBias/.
+`ca3558e3-e50d-4bbc-86bd-da50a0998a48/MasterBias/`.
 
 (megara) bash-3.2$ tree obsid0_bias_work/ obsid0_bias_results/
 
