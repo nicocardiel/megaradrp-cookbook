@@ -2,53 +2,80 @@
 Acronyms
 --------
 
-ADC Analog-Digital Converter / Conversion
+.. glossary::
 
-AIV Assembly, Integration and Verification
+    ADC 
+        Analog-Digital Converter / Conversion
 
-BPM Bad-Pixels Mask
+    AIV 
+        Assembly, Integration and Verification
 
-CCD Charged-Coupled Device
+    BPM 
+        Bad-Pixels Mask
 
-DRP Data Reduction Pipeline
+    CCD 
+        Charged-Coupled Device
 
-DU Digital Unit
+    DRP 
+        Data Reduction Pipeline
 
-FC Folded-Cassegrain
+    DU 
+        Digital Unit
 
-FMAT Fiber-MOS Assignment Tool
+    FC 
+        Folded-Cassegrain
 
-FWHM Full-Width at Half-Maximum
+    FMAT 
+        Fiber-MOS Assignment Tool
 
-GTC Gran Telescopio CANARIAS
+    FWHM 
+        Full-Width at Half-Maximum
 
-ICM Instrument Calibration Module
+    GTC 
+        Gran Telescopio CANARIAS
 
-IFU Integral Field Unit
+    ICM 
+        Instrument Calibration Module
 
-IFS Integral Field Spectrograph / Integral Field Spectroscopy
+    IFU 
+        Integral Field Unit
 
-IPA Instrument Position Angle
+    IFS 
+        Integral Field Spectrograph / Integral Field Spectroscopy
 
-JSON JavaScript Object Notation
+    IPA 
+        Instrument Position Angle
 
-LCB Large Compact Bundle
+    JSON 
+        JavaScript Object Notation
 
-LICA Laboratorio de Instrumentación Científica Avanzada
+    LCB 
+        Large Compact Bundle
 
-MEGARA Multi-Espectrógrafo en GTC de Alta Resolución para Astronomía
+    LICA 
+        Laboratorio de Instrumentación Científica Avanzada
 
-MOS Multi-Object Spectrograph / Multi-Object Spectroscopy
+    MEGARA 
+        Multi-Espectrógrafo en GTC de Alta Resolución para Astronomía
 
-PA Position Angle
+    MOS 
+        Multi-Object Spectrograph / Multi-Object Spectroscopy
 
-PDF Portable Document Format
+    PA 
+        Position Angle
 
-RoN Readout Noise
+    PDF 
+        Portable Document Format
 
-RSS Row-Stacked Spectrum
+    RoN 
+        Readout Noise
 
-ROTANG Folded-Cassegrain Rotator Angle
+    RSS 
+        Row-Stacked Spectrum
 
-UCM Universidad Complutense de Madrid
+    ROTANG 
+        Folded-Cassegrain Rotator Angle
+
+    UCM 
+        Universidad Complutense de Madrid
 
