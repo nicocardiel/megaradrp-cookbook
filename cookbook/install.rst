@@ -1,65 +1,66 @@
 DRP installation
 ================
 
-The MEGARA pipeline is a Python package, for Python 3.5 or greater.
+The MEGARA pipeline is a Python package, for Python 3.9 or greater.
 
-The easiest method of installing megaradrp is using prebuilt packages.
-You can also build from source or directly from the development version.
-All the commands in the following sections are to be run under **bash
-shell**. More details are in the MEGARA DRP *readthedocs*
-documentation [2]_.
+The easiest method of installing megaradrp is using `pip` inside a virtual
+environment.
+You can install official relares or the development version.
+All the commands in the following sections, starting with `$` 
+are to be run under **bash shell**. 
+More details are in the MEGARA DRP *readthedocs*
+documentation [1]_.
 
-**Suggestion: what method of installation should I use?**
+Install with pip
+----------------
 
- * If you are already familiar with one method, use it (conda or virtualenv), since both a fully supported.
- * In macOS, there is a well-known compatibility problem between virtualenv and matplotlib [3]_, so we recommend setting up conda.
- * In Linux, virtualenv is easier to setup
-
-Install in virtualenv
-----------------------
-
-Virtualenv [4]_ is a tool that allows to create isolated Python
-environments. There is also a module in the standard library called venv
-with roughly the same functionallity.
+A virtual environment creates isolated Python installations, with 
+(potentially) different package versions.
+We will use the venv package (a module in the standard library) 
+here, although the virtualenv package [2]_ can also be used.
 
 The steps to run MEGARA DRP in a virtual environment are:
 
-Create a virtual environment using either virtualenv or venv.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+Create a virtual environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A virtual environment will have a *name* and a *path*.
 In order to create a virtual environment called e.g. megara using venv:
 
 .. code-block:: console
 
-    bash-3.2$ python3 -m venv megara /path/to/
+    $ python3 -m venv megara /path/to/
 
 With virtualenv:
 
 .. code-block:: console
 
-    bash-3.2$ virtualenv-3 megara /path/to/
+    $ virtualenv-3 megara /path/to/
 
-The directory \`/path/to\` represents the location of the environment.
-It can be any valid directory path, even the local directory \`.\` .
+The directory `/path/to` represents the location of the environment.
+
+It can be any valid directory path.
+If the path name is not specified, it will be created in the 
+working directory (notice that
+virtual environments shouldn't be moved after creation).
 
 Activate the environment.
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-After creating the environment, the directory \`/path/to/megara\`
+After creating the environment, the directory `/path/to/megara`
 contains a Python tree. One of the directories is
-\`/path/to/megara/bin\`, which contains a script called activate. To
+`/path/to/megara/bin`, which contains a script called `activate`. To
 activate the environment, we source (a bash shell command) this script
 file:
 
 .. code-block:: console
 
-    bash-3.2$ source /path/to/megara/bin/activate
+    $ source /path/to/megara/bin/activate
 
 which yields a different system prompt to the user:
 
 .. code-block:: console
 
-    (megara) bash-3.2$
+    (megara) $
 
 Now, the name of the environment appears before the standard prompt. We
 can use the environment only on those consoles / terminals where we have
@@ -76,7 +77,7 @@ What follows is a sample of the output:
 
 .. code-block:: console
 
-    (megara) bash-3.2$ pip install megaradrp
+    (megara) pip install megaradrp
     Collecting megaradrp
     Collecting scikit-image (from megaradrp)
     Downloading https://files.pythonhosted.org/packages/11/c7/ee75c79dcce057a3475763d611ec044737a708eaf5cc53426b0117795ddb/scikit_image-0.14.0-cp35-cp35mu-manylinux1_x86_64.whl (25.4MB)
@@ -100,18 +101,29 @@ Now we can test the installation by running the numina command:
 
 .. code-block:: console
     
-    (megara) bash-3.2$ numina
-    DEBUG: Numina simple recipe runner version 0.17.3
+    (megara) $ numina show-instruments
+    INFO: Numina simple recipe runner version 0.34
+    Instrument: MEGARA
+      version is '0.16'
+       has profile 'Configuration at LICA' uuid=9a86b2b2-3f7d-48ec-8f4f-3780ec967c90
+       has profile 'Configuration at GTC' uuid=ca3558e3-e50d-4bbc-86bd-da50a0998a48
+       has profile 'Test component' uuid=4fd05b24-2ed9-457b-b563-a3c618bb1d4c
+       has profile 'Configuration for the Simulator' uuid=66f2283e-3049-4d4b-8ef1-14d62fcb611d
+       has datamodel 'megaradrp.datamodel.MegaraDataModel'
+       has pipeline 'default', version 1
+
+The particular output of the command may change, but `Instrument: MEGARA` text
+should always appear.
 
 Update within the environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to update the MEGARA DRP in a virtualenv installation the user
+In order to update the MEGARA DRP to the latest stable release,  the user
 should execute:
 
 .. code-block:: console
     
-    (megara) bash-3.2$ pip install -U megaradrp
+    (megara) $ pip install -U megaradrp
 
 Deactivate the environment.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,8 +134,8 @@ command deactivate.
 
 .. code-block:: console
 
-    (megara) bash-3.2$ deactivate
-    bash-3.2$
+    (megara) $ deactivate
+    $
 
 Install in conda
 -----------------
@@ -133,7 +145,7 @@ to virtualenv, but know has
 extended its functionallity to package management for different
 languages.
 
-You can install miniconda [6]_ or anaconda [7]_. The difference is that
+You can install miniconda [3]_ or anaconda [4]_. The difference is that
 miniconda provides a light-weight environment and anaconda comes with
 lots of Python packages.
 
@@ -142,14 +154,14 @@ conda commands directly in the shell, like this:
 
 .. code-block:: console
 
-    bash-3.2$ conda info
+    $ conda info
 
 If not, you will need to add the path to the command (an example path
 could be miniconda3/bin), like:
 
 .. code-block:: console
 
-    bash-3.2$ /path/to/conda/bin/conda info
+    $ /path/to/conda/bin/conda info
 
 If that is the case, you should add that path every time you run a conda
 command hereafter. Alternatively, you can initialize conda for your own
@@ -157,14 +169,14 @@ shell by doing:
 
 .. code-block:: console
     
-    bash-3.2$ conda init bash
+    $ conda init bash
 
 This works as it is if you are using a login-shell (terminal), but if
 you are using a xterm, you might also need to do:
 
 .. code-block:: console
     
-    bash-3.2$ cp ~/.bash_profile ~/.bashrc 
+    $ cp ~/.bash_profile ~/.bashrc 
 
 (do a backup copy of ~/.bashrc if
 you have one already),
@@ -172,7 +184,7 @@ you have one already),
 and open a new terminal/xterm. Below, we will write the commands without
 the full path, for simplicity. Once conda is installed according to the
 instructions above, the steps to run MEGARA DRP under conda would be the
-following [8]_:
+following [5]_:
 
 Create a conda environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -182,22 +194,22 @@ by doing:
 
 .. code-block:: console
     
-    (base) bash-3.2$ conda update conda
+    (base) $ conda update conda
 
 With conda, environments are created in a centralised manner (under
-directory \`./envs\` in your conda tree), we do not pass the path to the
+directory `./envs` in your conda tree), we do not pass the path to the
 environment.
 
 .. code-block:: console
     
-    (base) bash-3.2$ conda create --name megara python=3
+    (base) $ conda create --name megara python=3
 
 One could remove this environment (and all its content), if needed, by
 simply doing:
 
 .. code-block:: console
     
-    (base) bash-3.2$ conda remove --name megara --all
+    (base) $ conda remove --name megara --all
 
 Install megaradrp with conda
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -207,10 +219,10 @@ conda packages for megaradrp in the  `conda-forge channel <https://conda-forge.o
 
 .. code-block:: console
 
-    (base) bash-3.2$ conda install --name megara -c conda-forge megaradrp
+    (base) $ conda install --name megara -c conda-forge megaradrp
     Fetching package metadata .............
     Solving package specifications: .
-    Package plan for installation in environment /home/spr/devel/miniconda3/envs/megara:
+    Package plan for installation in environment /home/xxx/devel/miniconda3/envs/megara:
     The following NEW packages will be INSTALLED:
     astropy: 2.0.8-py35_0 conda-forge
     atomicwrites: 1.1.5-py35_0 conda-forge
@@ -227,8 +239,8 @@ The functionality is similar to virtualenv:
 
 .. code-block:: console
 
-    (base) bash-3.2$ conda activate megara
-    (megara) bash-3.2$
+    (base) $ conda activate megara
+    (megara) $
 
 Again, after activating the environment, the name of the environment
 appears before the standard prompt. We can use the environment only on
@@ -240,11 +252,18 @@ Test the installation
 Now we can test the installation by running the numina command:
 
 .. code-block:: console
-    
-    (megara) bash-3.2$ numina
-    DEBUG: Numina simple recipe runner version 0.17.3
 
-.. _update-within-the-environment-1:
+    (megara) $ numina show-instruments
+    INFO: Numina simple recipe runner version 0.34
+    Instrument: MEGARA
+      version is '0.16'
+       has profile 'Configuration at LICA' uuid=9a86b2b2-3f7d-48ec-8f4f-3780ec967c90
+       has profile 'Configuration at GTC' uuid=ca3558e3-e50d-4bbc-86bd-da50a0998a48
+       has profile 'Test component' uuid=4fd05b24-2ed9-457b-b563-a3c618bb1d4c
+       has profile 'Configuration for the Simulator' uuid=66f2283e-3049-4d4b-8ef1-14d62fcb611d
+       has datamodel 'megaradrp.datamodel.MegaraDataModel'
+       has pipeline 'default', version 1
+
 
 Update within the environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -254,7 +273,7 @@ should execute:
 
 .. code-block:: console
     
-    (megara) bash-3.2$ conda update megaradrp
+    (megara) $ conda update megaradrp
 
 Deactivate the environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -264,8 +283,8 @@ command source deactivate
 
 .. code-block:: console
 
-    (megara) bash-3.2$ conda deactivate
-    (base) bash-3.2$
+    (megara) $ conda deactivate
+    (base) $
 
 Update outside the environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -275,15 +294,15 @@ installation by doing:
 
 .. code-block:: console
     
-    (base) bash-3.2$ conda update megaradrp -n megara
+    (base) $ conda update megaradrp -n megara
 
 If you want to deactivate the conda *(base)* environment entirely you
 can run again:
 
 .. code-block:: console
     
-    (base) bash-3.2$ conda deactivate
-    bash-3.2$
+    (base) $ conda deactivate
+    $
 
 Development version
 -------------------
@@ -295,23 +314,20 @@ the development version is recommended to have access to the latest DRP
 improvements.
 
 
-.. [2]
+.. [1]
    https://megara-drp.readthedocs.io/en/latest/installation.html
 
-.. [3]
-   https://matplotlib.org/faq/osx_framework.html
-
-.. [4]
+.. [2]
    https://virtualenv.pypa.io/en/stable/installation/
 
-.. [6]
+.. [3]
    See installation instructions at https://conda.io/miniconda.html
 
-.. [7]
+.. [4]
    See installation instructions at
    https://docs.anaconda.com/anaconda/install/
 
-.. [8]
+.. [5]
    If you are using conda version 4.4+ your terminal will open in the
    conda *(base)* environment. If you want to avoid that permanently
    just do: conda config --set auto_activate_base false
