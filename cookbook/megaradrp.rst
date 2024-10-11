@@ -2,7 +2,11 @@
 MEGARA Data Reduction Pipeline
 ==============================
 
-|image7|\ The deployment of the MEGARA instrument at GTC was accompanied
+|image1|
+
+**Figure 3:** *Data processing scheme of the MEGARA DRP.*
+
+The deployment of the MEGARA instrument at GTC was accompanied
 by the installation of a fully functioning Data Reduction Pipeline (DRP
 hereafter) developed in Python that worked both online at the telescope
 and offline. The online version of the DRP allows for on-the-fly data
@@ -11,14 +15,10 @@ fixed-aperture extraction, fiber-flat and twilight-flat correction and
 wavelength calibration. The offline processing (to which this cookbook
 is devoted) additionally includes a detailed cross-talk-corrected
 extraction and absolute flux calibration whenever possible. The MEGARA
-DRP is distributed by GTC at
-http://www.gtc.iac.es/instruments/megara/config/megaradrp-0.6.dev2.tar.gz.
-Updates to the DRP can be obtained through *github* at
+DRP can be obtained through *github* at
 https://github.com/guaix-ucm/megaradrp (section 3). Line lists and the
 CCD Bad-Pixels Mask (BPM) are available at
-https://zenodo.org/record/2270518#.XRx9HKZS9E4.
-
-**Figure 3:** *Data processing scheme of the MEGARA DRP.*
+https://zenodo.org/record/2270518.
 
 The MEGARA DRP has been designed to cope with all effects associated to
 the observation with a fiber-fed spectrograph on which the detection of
@@ -46,6 +46,6 @@ spectrum. No combo products combining different spectral setups are yet
 generated.
 
 
-.. |image7| image:: _static/image10.png
+.. |image1| image:: _static/image10.png
    :width: 6.63681in
    :height: 3.09306in
