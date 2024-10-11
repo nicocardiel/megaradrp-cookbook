@@ -1,3 +1,5 @@
+.. _DRP_installation:
+
 DRP installation
 ================
 
