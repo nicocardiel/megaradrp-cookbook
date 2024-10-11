@@ -3,13 +3,11 @@ DRP installation
 
 The MEGARA pipeline is a Python package, for Python 3.9 or greater.
 
-The easiest method of installing megaradrp is using `pip` inside a virtual
+The easiest method of installing megaradrp is using ``pip`` inside a virtual
 environment.
 You can install official relares or the development version.
-All the commands in the following sections, starting with `$` 
+All the commands in the following sections, starting with ``$`` 
 are to be run under **bash shell**. 
-More details are in the MEGARA DRP *readthedocs*
-documentation [1]_.
 
 Install with pip
 ----------------
@@ -17,7 +15,7 @@ Install with pip
 A virtual environment creates isolated Python installations, with 
 (potentially) different package versions.
 We will use the venv package (a module in the standard library) 
-here, although the virtualenv package [2]_ can also be used.
+here, although the virtualenv package [1]_ can also be used.
 
 The steps to run MEGARA DRP in a virtual environment are:
 
@@ -36,19 +34,19 @@ With virtualenv:
 
     $ virtualenv-3 megara /path/to/
 
-The directory `/path/to` represents the location of the environment.
+The directory ``/path/to`` represents the location of the environment.
 
 It can be any valid directory path.
 If the path name is not specified, it will be created in the 
 working directory (notice that
 virtual environments shouldn't be moved after creation).
 
-Activate the environment.
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Activate the environment
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-After creating the environment, the directory `/path/to/megara`
+After creating the environment, the directory ``/path/to/megara``
 contains a Python tree. One of the directories is
-`/path/to/megara/bin`, which contains a script called `activate`. To
+``/path/to/megara/bin``, which contains a script called ``activate``. To
 activate the environment, we source (a bash shell command) this script
 file:
 
@@ -94,8 +92,8 @@ What follows is a sample of the output:
     pluggy, attrs, scandir, pathlib2, py, funcsigs, pytest, astropy, PyYaml,
     numina, megaradrp
 
-Test the installation.
-~~~~~~~~~~~~~~~~~~~~~~
+Test the installation
+~~~~~~~~~~~~~~~~~~~~~
 
 Now we can test the installation by running the numina command:
 
@@ -112,7 +110,7 @@ Now we can test the installation by running the numina command:
        has datamodel 'megaradrp.datamodel.MegaraDataModel'
        has pipeline 'default', version 1
 
-The particular output of the command may change, but `Instrument: MEGARA` text
+The particular output of the command may change, but ``Instrument: MEGARA`` text
 should always appear.
 
 Update within the environment
@@ -125,8 +123,8 @@ should execute:
     
     (megara) $ pip install -U megaradrp
 
-Deactivate the environment.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Deactivate the environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To exit the environment is enough to exit the terminal or run the
 command deactivate.
@@ -138,18 +136,18 @@ command deactivate.
     $
 
 Install in conda
------------------
+----------------
 
 `Conda <https://conda.io/docs/>`_ was created with a target similar 
 to virtualenv, but know has
 extended its functionallity to package management for different
 languages.
 
-You can install miniconda [3]_ or anaconda [4]_. The difference is that
+You can install miniconda [2]_ or anaconda [3]_. The difference is that
 miniconda provides a light-weight environment and anaconda comes with
 lots of Python packages.
 
-If you have updated the $PATH variable during install, you can call
+If you have updated the ``$PATH`` variable during install, you can call
 conda commands directly in the shell, like this:
 
 .. code-block:: console
@@ -157,7 +155,7 @@ conda commands directly in the shell, like this:
     $ conda info
 
 If not, you will need to add the path to the command (an example path
-could be miniconda3/bin), like:
+could be ``miniconda3/bin``), like:
 
 .. code-block:: console
 
@@ -172,19 +170,20 @@ shell by doing:
     $ conda init bash
 
 This works as it is if you are using a login-shell (terminal), but if
-you are using a xterm, you might also need to do:
+you are using an xterm, you might also need to do:
 
 .. code-block:: console
     
     $ cp ~/.bash_profile ~/.bashrc 
 
-(do a backup copy of ~/.bashrc if
-you have one already),
+(do a backup copy of ``~/.bashrc`` if you have one already),
 
 and open a new terminal/xterm. Below, we will write the commands without
-the full path, for simplicity. Once conda is installed according to the
+the full path, for simplicity. 
+
+Once conda is installed according to the
 instructions above, the steps to run MEGARA DRP under conda would be the
-following [5]_:
+following [4]_:
 
 Create a conda environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -197,7 +196,7 @@ by doing:
     (base) $ conda update conda
 
 With conda, environments are created in a centralised manner (under
-directory `./envs` in your conda tree), we do not pass the path to the
+directory ``./envs`` in your conda tree), we do not pass the path to the
 environment.
 
 .. code-block:: console
@@ -214,8 +213,9 @@ simply doing:
 Install megaradrp with conda
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Packages can be installed before activating the environment. We provide
-conda packages for megaradrp in the  `conda-forge channel <https://conda-forge.org/>`_
+Packages can be installed before activating the environment. We provide conda
+packages for megaradrp in the  `conda-forge channel
+<https://conda-forge.org/>`_
 
 .. code-block:: console
 
@@ -315,19 +315,16 @@ improvements.
 
 
 .. [1]
-   https://megara-drp.readthedocs.io/en/latest/installation.html
-
-.. [2]
    https://virtualenv.pypa.io/en/stable/installation/
 
-.. [3]
+.. [2]
    See installation instructions at https://conda.io/miniconda.html
 
-.. [4]
+.. [3]
    See installation instructions at
    https://docs.anaconda.com/anaconda/install/
 
-.. [5]
+.. [4]
    If you are using conda version 4.4+ your terminal will open in the
    conda *(base)* environment. If you want to avoid that permanently
    just do: conda config --set auto_activate_base false
