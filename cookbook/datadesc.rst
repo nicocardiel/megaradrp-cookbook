@@ -95,15 +95,15 @@ Structured products
 -------------------
 
 -  **master_wlcalib.json** (MegaraArcCalibration): File with the
-      information on the wavelength calibration solution for every
-      fiber.
+   information on the wavelength calibration solution for every
+   fiber.
 
 -  **master_traces.json** (MasterTraceMap): File with the tracing
-      information.
+   information.
 
 -  **master_model.json** (MasterModelMap): File with the information on
-      how to account for the cross-talk between adjacent fibers in the
-      detector.
+   how to account for the cross-talk between adjacent fibers in the
+   detector.
 
 In the case of the MegaraLcbStdStar recipe, the MEGARA DRP also
 generates two different 1D spectra, that of the standard star obtained
