@@ -1,0 +1,10 @@
+id: 5_HR-R
+mode: MegaraTwilightFlatImage
+instrument: MEGARA
+frames:
+ - 0001251794-20170626-MEGARA-MegaraLCBImage.fits
+ - 0001251795-20170626-MEGARA-MegaraLCBImage.fits
+ - 0001251796-20170626-MEGARA-MegaraLCBImage.fits
+requirements:
+  extraction_offset: [+2.5]
+  normalize_region: [1550, 1700]

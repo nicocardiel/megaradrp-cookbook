@@ -1,0 +1,12 @@
+id: 8_HR-R_M15
+mode: MegaraLcbImage
+instrument: MEGARA
+frames:
+ - 0001309955-20170822-MEGARA-MegaraLcbAcquisition.fits
+ - 0001309956-20170822-MEGARA-MegaraLcbAcquisition.fits
+ - 0001309957-20170822-MEGARA-MegaraLcbAcquisition.fits
+requirements:
+ extraction_offset: [+6.5]
+ reference_extinction: null
+ master_sensitivity: null
+ ignored_sky_bundles: [93,95,98]

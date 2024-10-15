@@ -1,3 +1,5 @@
+.. _MEGARA_Tools: 
+
 MEGARA Tools
 ============
 
@@ -35,17 +37,16 @@ To develop your own tools based on **megara-tools**:
 
    (megara) $ git clone https://github.com/guaix-ucm/megara-tools.git
    (megara) $ cd megara-tools
-   (megara) $ python setup.py build
-   (megara) $ python setup.py install
+   (megara) $ pip install -e .
 
 All tools described in this section should be under Python >=3.5 and
 should be run within the MEGARA DRP environment. For all tools besides
 ``megaratools-cube`` and ``megaratools-hypercube``, these can be run under
-the *megaradrp* Python package (*numina* and *megaradrp* versions 0.21+
+the **megaradrp** Python package (**numina** and **megaradrp** versions 0.21+
 and 0.9+, respectively) or under the development version. For
 ``megaratools-cube`` and ``megaratools-hypercube``, the development version
 or Python packages with release date after July 1\ :sup:`st` 2020
-(*numina* and *megaradrp* versions 0.22+ and 0.10+, respectively) should
+(**numina** and **megaradrp** versions 0.22+ and 0.10+, respectively) should
 be used. All these tools have been extensively tested in Mac OS X (10.10
 to 10.15) and linux machines. Some of the examples below make use of
 ``test/*`` folder data that are downloaded when executing the code tests.

@@ -1,0 +1,9 @@
+id: 6_HR-R
+mode: MegaraLcbAcquisition
+instrument: MEGARA
+frames:
+ - 0001286973-20170724-MEGARA-MegaraLcbImage.fits
+ - 0001286974-20170724-MEGARA-MegaraLcbImage.fits
+ - 0001286975-20170724-MEGARA-MegaraLcbImage.fits
+requirements:
+ extraction_offset: [+4.5]

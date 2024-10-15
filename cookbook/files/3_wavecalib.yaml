@@ -1,0 +1,10 @@
+id: 3_HR-R
+mode: MegaraArcCalibration
+instrument: MEGARA
+frames:
+ - 0001312249-20170831-MEGARA-MegaraSuccess.fits
+ - 0001312250-20170831-MEGARA-MegaraSuccess.fits
+ - 0001312251-20170831-MEGARA-MegaraSuccess.fits
+requirements:
+ extraction_offset: [0.0]
+ store_pdf_with_refined_fits: 1

@@ -1,0 +1,14 @@
+id: 0_bias_test
+mode: MegaraBiasImage
+instrument: MEGARA
+frames:
+ - 0001310880-20170827-MEGARA-MegaraBiasImage.fits
+ - 0001310881-20170827-MEGARA-MegaraBiasImage.fits
+ - 0001310882-20170827-MEGARA-MegaraBiasImage.fits
+ - 0001310883-20170827-MEGARA-MegaraBiasImage.fits
+ - 0001310884-20170827-MEGARA-MegaraBiasImage.fits
+ - 0001310885-20170827-MEGARA-MegaraBiasImage.fits
+ - 0001310886-20170827-MEGARA-MegaraBiasImage.fits
+ - 0001310887-20170827-MEGARA-MegaraBiasImage.fits
+ - 0001310888-20170827-MEGARA-MegaraBiasImage.fits
+

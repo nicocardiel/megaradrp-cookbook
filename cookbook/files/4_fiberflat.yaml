@@ -1,0 +1,9 @@
+id: 4_HR-R
+mode: MegaraFiberFlatImage
+instrument: MEGARA
+frames:
+ - 0001312246-20170831-MEGARA-MegaraSuccess.fits
+ - 0001312247-20170831-MEGARA-MegaraSuccess.fits
+ - 0001312248-20170831-MEGARA-MegaraSuccess.fits
+requirements:
+ extraction_offset: [0.0]

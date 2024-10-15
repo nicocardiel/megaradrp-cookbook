@@ -1,0 +1,7 @@
+id: 2_HR-R
+mode: MegaraModelMap
+instrument: MEGARA
+frames:
+ - 0001312246-20170831-MEGARA-MegaraSuccess.fits
+ - 0001312247-20170831-MEGARA-MegaraSuccess.fits
+ - 0001312248-20170831-MEGARA-MegaraSuccess.fits

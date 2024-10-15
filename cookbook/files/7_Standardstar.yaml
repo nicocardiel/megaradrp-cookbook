@@ -1,0 +1,16 @@
+id: 7_HR-R
+mode: MegaraLcbStdStar
+instrument: MEGARA
+frames:
+ - 0001286973-20170724-MEGARA-MegaraLcbImage.fits
+ - 0001286974-20170724-MEGARA-MegaraLcbImage.fits
+ - 0001286975-20170724-MEGARA-MegaraLcbImage.fits
+requirements:
+ extraction_offset: [+4.5]
+ reference_spectrum: mbd284211_stis.dat
+ reference_extinction: extinction_LP.txt
+ position:  [0.29712138659120624, 0.04342557311038363]
+ sigma_resolution: 100
+
+
+
