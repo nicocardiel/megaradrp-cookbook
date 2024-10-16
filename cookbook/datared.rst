@@ -809,8 +809,9 @@ Wavelength Calibration
 
 In this processing step the wavelength solution for each fiber is
 created using recipe **MegaraArcCalibration**. To create the dispersion
-solution the recipe needs raw arc-lamp [10]_ frames as input (see
-**Figure 7**).
+solution the recipe needs raw arc-lamp frames as input (see **Figure 7**). Note
+that although the term used is "arc-lamps" these are ThAr and ThNe
+Hollow-Cathode Lamps (HCL).
 
 .. image:: _static/image15.png
    :width: 5.0in
@@ -818,11 +819,15 @@ solution the recipe needs raw arc-lamp [10]_ frames as input (see
 **Figure 7:** MEGARA LCB ThNe arc-lamp exposure obtained with the HR-R
 VPH.
 
-The user needs to check if the traces already computed in the previous
-step are appropriate to do the extraction in the arc-lamp exposures. If
-the continuum halogen used to generate the traces and the arc-lamp
-images were obtained near in time there no offset should be applied to
-the traces [11]_. The user can check this and evaluate the actual offset
+The user needs to check if the traces already computed in the previous step are
+appropriate to do the extraction in the arc-lamp exposures. If the continuum
+halogen used to generate the traces and the arc-lamp images were obtained near
+in time there no offset should be applied to the traces. By taking the images
+close in time user ensures that temperature remains constant so no offset is
+present. The offsets are estimated to be ~1 pixel per ºC/K of change in
+temperature. No offset in the spectral direction has been reported.
+
+The user can check this and evaluate the actual offset
 by plotting the ``ds9_raw.reg`` regions file on top of the arc-lamp raw
 image using DS9. If the traces (regions in ``ds9_raw.reg``) are above the
 fiber as seen in the raw image, then the offset is a negative number and
@@ -1317,10 +1322,19 @@ The ``extraction_offset`` parameter can be computed as detailed in section
 :ref:`Wavelength_Calibration` (this parameter is the same as in
 ``6_Lcbadquisition.yaml`` for the same spectrophotometric standard star). The
 parameter ``reference_spectrum`` includes a text file where the flux-calibrated
-spectrum in AB magnitudes is provided [12]_.  This parameter can be also
-specify in the ``control.yaml``. The ``reference_extinction`` parameter points
-to the text file with the information to apply the atmospheric extinction
-correction [13]_. By default, the DRP searches for these data files in the
+spectrum in AB magnitudes is provided.  (the format of these files is the same
+as for those found in the ESO spectrophotometric standard stars database
+located at this `ESO web page
+<https://www.eso.org/sci/observing/tools/standards/spectra/>`_). This
+parameter can be also specify in the ``control.yaml``. The
+``reference_extinction`` parameter points to the text file with the information
+to apply the atmospheric extinction correction.  (for processing standard-star
+observations this parameter must be defined in either the ``control.yaml`` of
+``7_Standardstar.yaml`` files or the recipe would fail; in the case of the
+**MegaraLcbImage** or **MegarMosImage** recipes this would only imply that the
+processed data would not be corrected for atmospheric extinction).
+
+By default, the DRP searches for these data files in the
 ``data/`` directory.  The ``position`` parameter is the position of the
 reference object, i.e.  the offset in mm at the CCD detector computed with the
 recipe **MegaraLcbAcquisition**, written in the same format and units. Finally,
@@ -1688,24 +1702,3 @@ file:
    :width: 3.5784in
    :height: 2.70836in
 
-.. [10]
-   Note that although the term used is “arc-lamps” these are ThAr and
-   ThNe Hollow-Cathode Lamps (HCL).
-
-.. [11]
-   By taking the images close in time user ensures that temperature
-   remains constant so no offset is present. The offsets are estimated
-   to be ~1 pixel per ºC/K of change in temperature. No offset in the
-   spectral direction has been reported.
-
-.. [12]
-   The format of these files is the same as for those found in the ESO
-   spectrophotometric standard stars database located at
-   https://www.eso.org/sci/observing/tools/standards/spectra/.
-
-.. [13]
-   For processing standard-star observations this parameter must be
-   defined in either the ``control.yaml`` of ``7_Standardstar.yaml`` files
-   or the recipe would fail. In the case of the **MegaraLcbImage** or
-   **MegarMosImage** recipes this would only imply that the processed data
-   would not be corrected for atmospheric extinction.

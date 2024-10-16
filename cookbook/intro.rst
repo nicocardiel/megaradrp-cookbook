@@ -71,7 +71,11 @@ Hα+[NII] region and in the CaT region with R=20,000, although the
 optical design could in principle accommodate HR VPHs at any other
 optical wavelength. In **Figure 2** we show the resolving power and
 spectral coverage for each VPH as measured during the integration and
-commissioning of the instrument [1]_.
+commissioning of the instrument. Note that in some of the cases the spectral
+coverage shown is shorter than the one actually achieved simply because the
+spectral lamp lacks bright spectral features (on which to measure the spectral
+resolution and resolving power), especially at the blue end of the optical
+spectral range.
 
 |image3|
 
@@ -87,7 +91,14 @@ in Table 1. This table also includes the reciprocal (linear) dispersion
 (CDELT) and wavelength for the initial pixel (CRVAL for CRPIX=1) as
 adopted for the MEGARA DRP for different VPHs. The user is referred to
 different publications to learn more about the MEGARA instrument,
-including [R.1], [R.2] and [R.3].
+including 
+`Gil de Paz et al. (2016)
+<https://www.spiedigitallibrary.org/conference-proceedings-of-spie/9908/1/MEGARA-the-new-intermediate-resolution-optical-IFU-and-MOS-for/10.1117/12.2231988.full>`_,
+`Gil de Paz et al. (2018)
+<https://www.spiedigitallibrary.org/conference-proceedings-of-spie/10702/2313299/First-scientific-observations-with-MEGARA-at-GTC/10.1117/12.2313299.full>`_
+and
+`Carrasco et al. (2018)
+<https://www.spiedigitallibrary.org/conference-proceedings-of-spie/10702/2313040/MEGARA-the-R6000-20000-IFU-and-MOS-of-GTC/10.1117/12.2313040.full>`_.
 
 |image4|
 
@@ -100,13 +111,6 @@ wavelength calibrated.
 
 Note that the reciprocal dispersion is the one used for the linear
 solution in the images processed by the MEGARA Data Reduction Pipeline.
-
-.. [1]
-   Note that in some of the cases the spectral coverage shown is shorter
-   than the one actually achieved simply because the spectral lamp lacks
-   bright spectral features (on which to measure the spectral resolution
-   and resolving power), especially at the blue end of the optical
-   spectral range.
 
 .. |image1| image:: _static/image2.png
    :width: 3.65278in

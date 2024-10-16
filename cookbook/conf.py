@@ -19,7 +19,7 @@
 
 project = 'megara-cookbook'
 copyright = '2018-2024, Universidad Complutense de Madrid'
-author = 'África Castillo'
+author = 'África Castillo-Morales, Sergio Pascual, Armando Gil de Paz, Nicolás Cardiel'
 
 # The full version, including alpha/beta/rc tags
 release = 'v1.0'

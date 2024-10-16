@@ -16,14 +16,14 @@ first one including the data themselves and the second one providing all
 the information about the fibers (positions in the sky, bundle to which
 they belong and whether they are devoted to the observation of target or
 sky). Among these images one can find bias frames (as they are obtained
-with the MegaraBiasImage observing mode they include the name of this
+with the **MegaraBiasImage** observing mode they include the name of this
 mode it their filename), fiber-flat images (obtained with either the
-MegaraTraceMap or the MegaraFiberFlatImage observing modes), ThAr or
-ThNe HCL lamp spectra (obtained with the MegaraArcCalibration observing
-mode) and scientific observations with either the LCB (MegaraLcbImage or
-MegaraLcbAcquisition; this latter mode is commonly used when the target
+**MegaraTraceMap** or the **MegaraFiberFlatImage** observing modes), ThAr or
+ThNe HCL lamp spectra (obtained with the **MegaraArcCalibration** observing
+mode) and scientific observations with either the LCB (**MegaraLcbImage** or
+**MegaraLcbAcquisition**; this latter mode is commonly used when the target
 is a bright star, normally a spectrophotometric standard star) or the
-MOS (MegaraMosImage).
+MOS (**MegaraMosImage**).
 
 Pipeline Products
 =================
@@ -39,34 +39,34 @@ groups along with the recipe that generates them.
 Full-frame FITS image products
 ------------------------------
 
--  **master_bias.fits** (MasterBiasImage): Final image of the
+-  ``master_bias.fits`` (**MasterBiasImage**): Final image of the
    MasterBiasImage recipe.
 
--  **reduced_image.fits** (MegaraDarkImage, MasterTraceMap,
-   MegaraModelMap, MegaraFiberFlatImage, MegaraArcCalibration,
-   MegaraTwilightFlatImage, MegaraLcbStdStar, MegaraLcbAcquisition,
-   MegaraLcbImage, MegaraMosImage, MegaraArcCalibration): Final image
-   after all individual exposures have been processed and combined.
+-  ``reduced_image.fits`` (**MegaraDarkImage**, **MasterTraceMap**,
+   **MegaraModelMap**, **MegaraFiberFlatImage**, **MegaraArcCalibration**,
+   **MegaraTwilightFlatImage**, **MegaraLcbStdStar**, **MegaraLcbAcquisition**,
+   **MegaraLcbImage**, **MegaraMosImage**, **MegaraArcCalibration**): Final
+   image after all individual exposures have been processed and combined.
 
--  **master_slitflat.fits** (MegaraSlitFlat): Image obtained by
+-  ``master_slitflat.fits`` (**MegaraSlitFlat**): Image obtained by
    observing a continuum-lamp light with the spectrograph out of its
    optimal focus. The level of de-focusing should be enough to ensure a
    uniform illumination through the entire CCD but keeping the
    wavelength of the light approximately the same at each given pixel
    that when the instrument is well focused.
 
--  **fwhm_image.fits** (MegaraArcCalibration): Voronoi map of the FWHM
+-  ``fwhm_image.fits`` (**MegaraArcCalibration**): Voronoi map of the FWHM
    derived from the fits to the Gaussian profiles of all spectral lines
    identified in the arc-lamp image.
 
 RSS FITS image products
 -----------------------
 
--  **master_fiberflat.fits** (MegaraFiberFlatImage): Image to be applied
+-  ``master_fiberflat.fits`` (**MegaraFiberFlatImage**): Image to be applied
    to correct for variations in sensitivity in between fibers and from
    blue-to-red within each fiber.
 
--  **master_twilightflat.fits** (MegaraTwilightFlatImage): Image to be
+-  ``master_twilightflat.fits`` (**MegaraTwilightFlatImage**): Image to be
    applied to correct for the effect of illumination introduced by the
    fiber-flat image when this was obtained through the FC-F ICM and
    differences between the pupil of the ICM and the GTC pupil when the
@@ -75,17 +75,17 @@ RSS FITS image products
    (blue-to-red sensitivity variations were corrected with the
    fiber-flat image).
 
--  **reduced_rss.fits** (MegaraLcbAcquisition, MegaraLcbStdStar,
-   MegaraLcbImage, MegaraMosImage, MegaraArcCalibration): Processed
+-  ``reduced_rss.fits`` (**MegaraLcbAcquisition**, **MegaraLcbStdStar**,
+   **MegaraLcbImage**, **MegaraMosImage**, **MegaraArcCalibration**): Processed
    image prior to the subtraction of the sky spectrum.
 
--  **sky_rss.fits** (MegaraLcbAcquisition, MegaraLcbStdStar,
-   MegaraLcbImage, MegaraMosImage, MegaraArcCalibration): RSS image
+-  ``sky_rss.fits`` (**MegaraLcbAcquisition**, **MegaraLcbStdStar**,
+   **MegaraLcbImage**, **MegaraMosImage**, **MegaraArcCalibration**): RSS image
    showing signal only in the valid sky fibers. All other pixels are set
    to zero.
 
--  **final_rss.fits** (MegaraLcbAcquisition, MegaraLcbStdStar,
-   MegaraLcbImage, MegaraMosImage, MegaraArcCalibration): Processed
+-  ``final_rss.fits`` (**MegaraLcbAcquisition**, **MegaraLcbStdStar**,
+   **MegaraLcbImage**, **MegaraMosImage**, **MegaraArcCalibration**): Processed
    image after the subtraction of the sky spectrum is performed. In the
    case of the MOS, this image includes an extension of 92 rows by 4300
    columns where all 7 fibers of each minibundle have been added
@@ -94,30 +94,30 @@ RSS FITS image products
 Structured products
 -------------------
 
--  **master_wlcalib.json** (MegaraArcCalibration): File with the
+-  ``master_wlcalib.json`` (**MegaraArcCalibration**): File with the
    information on the wavelength calibration solution for every
    fiber.
 
--  **master_traces.json** (MasterTraceMap): File with the tracing
+-  ``master_traces.json`` (**MasterTraceMap**): File with the tracing
    information.
 
--  **master_model.json** (MasterModelMap): File with the information on
+-  ``master_model.json`` (**MasterModelMap**): File with the information on
    how to account for the cross-talk between adjacent fibers in the
    detector.
 
-In the case of the MegaraLcbStdStar recipe, the MEGARA DRP also
+In the case of the **MegaraLcbStdStar** recipe, the MEGARA DRP also
 generates two different 1D spectra, that of the standard star obtained
 after extracting the 37 spaxels around the centroid identified in the
-observation-result file (*star_spectrum.fits*) and also the resulting
-sensitivity function (*master_sentivity.fits*).
+observation-result file (``star_spectrum.fits``) and also the resulting
+sensitivity function (``master_sentivity.fits``).
 
 In addition to all these files, the results directory of every recipe
-includes also a file named *task.yaml* (file with the description of the
-execution of the recipe), the file *result.yaml* (names of the files
+includes also a file named ``task.yaml`` (file with the description of the
+execution of the recipe), the file ``result.yaml`` (names of the files
 resulting from the recipe and some quality-control information) and the
-*processing.log* logging file.
+``processing.log`` logging file.
 
 Besides ds9/SAOimage or similar software packages, the FITS products
 generated by the MEGARA DRP can be also visualized using the tool
-numina-ximshow distributed as part of **numina**.
+``numina-ximshow`` distributed as part of **numina**.
 

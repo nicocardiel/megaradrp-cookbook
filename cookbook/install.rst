@@ -17,7 +17,8 @@ Install with pip
 A virtual environment creates isolated Python installations, with 
 (potentially) different package versions.
 We will use the venv package (a module in the standard library) 
-here, although the virtualenv package [1]_ can also be used.
+here, although the `virtualenv package
+<https://virtualenv.pypa.io/en/latest/>`_ can also be used.
 
 The steps to run MEGARA DRP in a virtual environment are:
 
@@ -145,7 +146,8 @@ to virtualenv, but know has
 extended its functionallity to package management for different
 languages.
 
-You can install miniconda [2]_ or anaconda [3]_. The difference is that
+You can install `miniconda <https://docs.anaconda.com/miniconda/>`_ or
+`anaconda <https://www.anaconda.com/>`_. The difference is that
 miniconda provides a light-weight environment and anaconda comes with
 lots of Python packages.
 
@@ -180,12 +182,15 @@ you are using an xterm, you might also need to do:
 
 (do a backup copy of ``~/.bashrc`` if you have one already),
 
-and open a new terminal/xterm. Below, we will write the commands without
-the full path, for simplicity. 
+and open a new terminal/xterm. Below, we will write the commands without the
+full path, for simplicity.  If you are using conda version 4.4+ your terminal
+will open in the conda *(base)* environment. If you want to avoid that
+permanently just do: ``conda config --set auto_activate_base false``.
+
 
 Once conda is installed according to the
 instructions above, the steps to run MEGARA DRP under conda would be the
-following [4]_:
+following:
 
 Create a conda environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -315,19 +320,4 @@ https://megaradrp.readthedocs.io/en/latest/installation.html. The use of
 the development version is recommended to have access to the latest DRP
 improvements.
 
-
-.. [1]
-   https://virtualenv.pypa.io/en/stable/installation/
-
-.. [2]
-   See installation instructions at https://conda.io/miniconda.html
-
-.. [3]
-   See installation instructions at
-   https://docs.anaconda.com/anaconda/install/
-
-.. [4]
-   If you are using conda version 4.4+ your terminal will open in the
-   conda *(base)* environment. If you want to avoid that permanently
-   just do: conda config --set auto_activate_base false
 
