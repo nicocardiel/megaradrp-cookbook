@@ -1,0 +1,14 @@
+FITTING CONTINUUM:
+Input(slope,yord):   0.000E+00  9.724E-14
+Output(slope,yord): -5.336E-17  4.468E-13
+Best-fitting chisqr continuum:  7.321E-27
+BASIC NUMBERS:
+(mean,rms,lpk,pk,S/N) 9.682864107165422e-14 2.9143067925725397e-15 6561.03 1.658473599169167e-13 56.907996213575935
+FITTING METHOD: DOUBLE GAUSSIAN
+Input(i1,l1,sig1,i2,l2,sig2):   6.212E-14 6561.03  0.47 -1.380E-15 6561.03  0.93
+Flux1 from model:  8.224E-14+/- 9.845E-15
+Flux2 from model: -1.117E-13+/- 9.573E-15
+Output(i1,l1,sig1,i2,l2,sig2):  8.308E-14 6561.11  0.39 -1.263E-14 6561.31  3.63
+Flux & EW from data:  -2.844E-14+/- 9.690E-15 -0.29+/- 0.10
+Flux & EW from model: -2.949E-14+/- 9.689E-15 -0.30+/- 0.10
+Best-fitting chisqr:  2.279E-28

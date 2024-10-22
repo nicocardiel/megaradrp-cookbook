@@ -1,0 +1,34 @@
+(megara) $ megaratools-plot_spectrum -h
+usage: plot_spectrum [-h] [-s SPECTRUM/FILE_LIST] [-l] [-t STD-TABLE]
+                     [-c LINECAT-TABLE] [-z LINECAT-Z] [-o OUTPUT-PDF] [-e]
+                     [-p] [-n] [-L1 INITIAL LAMBDA] [-L2 LAST LAMBDA]
+                     [-F1 YMIN FLUX] [-F2 YMAX FLUX] [-T PLOT TITLE]
+
+Input spectrum and table
+
+options:
+  -h, --help            show this help message and exit
+  -s SPECTRUM/FILE_LIST, --spectrum SPECTRUM/FILE_LIST
+                        FITS spectrum / list of FITS spectra
+  -l, --is-a-list       Use for -s being a list of FITS spectra
+  -t STD-TABLE, --std-table STD-TABLE
+                        Standard-star spectrum table
+  -c LINECAT-TABLE, --catalog LINECAT-TABLE
+                        Cataloged lines CSV table
+  -z LINECAT-Z, --redshift LINECAT-Z
+                        Redshift for catalog lines
+  -o OUTPUT-PDF, --output OUTPUT-PDF
+                        Output PDF
+  -e, --efficiency      Efficiency?
+  -p, --plot            Plot spectrum?
+  -n, --no-legend       Legend?
+  -L1 INITIAL LAMBDA, --min-lambda INITIAL LAMBDA
+                        Initial (rest-frame) lambda to plot
+  -L2 LAST LAMBDA, --max-lambda LAST LAMBDA
+                        Last (rest-frame) lambda to plot
+  -F1 YMIN FLUX, --min-flambda YMIN FLUX
+                        Minimum flux to plot
+  -F2 YMAX FLUX, --max-flambda YMAX FLUX
+                        Maximum flux to plot
+  -T PLOT TITLE, --title PLOT TITLE
+                        Title of the plot

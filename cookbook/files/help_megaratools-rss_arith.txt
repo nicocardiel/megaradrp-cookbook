@@ -1,0 +1,14 @@
+(megara) $ megaratools-rss_arith -h
+usage: combine_rss [-h] [-e Equation to evaluate] [-o OUTPUT RSS] rss
+
+Combining by averaging aligned RSS files
+
+positional arguments:
+  rss                   Input table with list of RSS files
+
+options:
+  -h, --help            show this help message and exit
+  -e Equation to evaluate, --equation Equation to evaluate
+                        Example: '(ima1[:,9] + ima2[:,10])/ ima3[:,3]'
+  -o OUTPUT RSS, --output OUTPUT RSS
+                        Output RSS

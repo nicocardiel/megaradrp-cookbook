@@ -1,0 +1,77 @@
+(megara) $ python -m  megaradrp.visualization --help
+usage: visualization.py [-h] [--wcs-grid] [--wcs-pa-from-header]
+                        [--fix-missing]
+                        [--average-region AVERAGE_REGION AVERAGE_REGION]
+                        [--extname EXTNAME] [--column COLUMN]
+                        [--continuum-region CONTINUUM_REGION CONTINUUM_REGION]
+                        [--coordinate-type {pixel,wcs}] [--colormap COLORMAP]
+                        [--plot-sky] [--display-fibid] [--plot-nominal-config]
+                        [--hide-values] [--title TITLE] [--label LABEL]
+                        [--hex-size HEX_SIZE] [--hex-rel-size HEX_REL_SIZE]
+                        [--min-cut MIN_CUT] [--max-cut MAX_CUT]
+                        [--percent PERCENT]
+                        [--stretch {linear,sqrt,power,log,asinh}]
+                        [--contour-pixel-size CONTOUR_PIXEL_SIZE]
+                        [--contour-levels CONTOUR_LEVELS] [--contour]
+                        [--contour-image CONTOUR_IMAGE]
+                        [--contour-image-column CONTOUR_IMAGE_COLUMN]
+                        [--contour-image-save CONTOUR_IMAGE_SAVE]
+                        [--contour-image-region CONTOUR_IMAGE_REGION CONTOUR_IMAGE_REGION]
+                        [--contour-is-density]
+                        RSS [RSS ...]
+
+Display MEGARA RSS images
+
+positional arguments:
+  RSS                   RSS images to process
+
+options:
+  -h, --help            show this help message and exit
+  --wcs-grid, --display-wcs-grid
+                        Display WCS grid
+  --wcs-pa-from-header  Use PA angle from PC keys
+  --fix-missing         Interpolate missing fibers
+  --average-region AVERAGE_REGION AVERAGE_REGION
+                        Region of the RSS averaged on display
+  --extname EXTNAME, -e EXTNAME
+                        Name of the extension used
+  --column COLUMN, -c COLUMN
+                        Column of the RSS on display
+  --continuum-region CONTINUUM_REGION CONTINUUM_REGION
+                        Region of the RSS used for continuum subtraction
+  --coordinate-type {pixel,wcs}
+                        Types of coordinates used
+  --colormap COLORMAP   Name of a valid matplotlib colormap
+  --plot-sky, --display-sky
+                        Display SKY bundles
+  --display-fibid, --plot-fibid
+                        Display fiber IDs of the spaxels
+  --plot-nominal-config
+                        Plot nominal configuration, do not use the header
+  --hide-values         Do not show values out of range
+  --title TITLE         Title of the plot
+  --label LABEL         Legend of the colorbar
+  --hex-size HEX_SIZE   Size of the hexagons (default is 0.443)
+  --hex-rel-size HEX_REL_SIZE
+                        Scale the size of hexagons by a factor
+  --min-cut MIN_CUT     Inferior cut level
+  --max-cut MAX_CUT     Superior cut level
+  --percent PERCENT     Compute cuts using percentiles
+  --stretch {linear,sqrt,power,log,asinh}
+                        Name of the strech method used for display
+
+contouring:
+  --contour-pixel-size CONTOUR_PIXEL_SIZE
+                        Pixel size in arc seconds for image reconstruction
+  --contour-levels CONTOUR_LEVELS
+                        Contour levels
+  --contour             Draw contours
+  --contour-image CONTOUR_IMAGE
+                        Image for computing contours
+  --contour-image-column CONTOUR_IMAGE_COLUMN
+                        Column of image used for contouring
+  --contour-image-save CONTOUR_IMAGE_SAVE
+                        Save image used for contouring
+  --contour-image-region CONTOUR_IMAGE_REGION CONTOUR_IMAGE_REGION
+                        Region of the image used for contouring
+  --contour-is-density  The data is a magnitude that does not require scaling

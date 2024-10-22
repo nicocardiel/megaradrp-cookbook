@@ -1,0 +1,18 @@
+usage: extract_spectrum [-h] [-s RSS-SPECTRUM] [-t INPUT-TABLE] [-c COLUMN]
+                        [-g GREP-STRING] [-o OUTPUT-SPECTRUM] [-p]
+
+Extract spectrum based on fiber IDs
+
+options:
+  -h, --help            show this help message and exit
+  -s RSS-SPECTRUM, --spectrum RSS-SPECTRUM
+                        RSS FITS spectrum
+  -t INPUT-TABLE, --ids-table INPUT-TABLE
+                        File with list of IDs
+  -c COLUMN, --column COLUMN
+                        Column to select from table
+  -g GREP-STRING, --grep-string GREP-STRING
+                        String to do grep in table
+  -o OUTPUT-SPECTRUM, --output OUTPUT-SPECTRUM
+                        Output 1D spectrum
+  -p, --plot            Plot spectrum instead?

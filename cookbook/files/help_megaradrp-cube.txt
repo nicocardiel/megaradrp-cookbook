@@ -1,0 +1,21 @@
+(megara) $ megaradrp-cube -h
+usage: convert_rss_cube [-h] [-p PIXEL_SIZE] [-o OUTFILE] [-d]
+                        [-m {nn,linear}] [--wcs-pa-from-header]
+                        [--fix-missing]
+                        rss
+
+positional arguments:
+  rss                   RSS file with fiber traces
+
+options:
+  -h, --help            show this help message and exit
+  -p PIXEL_SIZE, --pixel-size PIXEL_SIZE
+                        Pixel size in arc seconds
+  -o OUTFILE, --outfile OUTFILE
+                        Name of the output cube file
+  -d, --disable-scaling
+                        Disable flux conservation
+  -m {nn,linear}, --method {nn,linear}
+                        Method of interpolation
+  --wcs-pa-from-header  Use PA angle from header
+  --fix-missing         Interpolate missing fibers

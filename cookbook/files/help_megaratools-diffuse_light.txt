@@ -1,0 +1,37 @@
+(megara) $ megaratools-diffuse_light -h
+usage: clean_diffuse_light [-h] [-i INPUT-IMAGE] [-o OUTPUT-IMAGE]
+                           [-r RESIDUALS-IMAGE] [-t MASTER-TRACES]
+                           [-s SHIFT-TRACES] [-w SEARCH-WINDOW]
+                           [-d DEGREE-POLY-COLS] [-d2 DEGREE-POLY-ROWS]
+                           [-p OUTPUT-PLOT] [-b SPECTRAL-BINNING]
+                           [-e EXCLUDE-REGION [EXCLUDE-REGION ...]] [-2D]
+
+Cleaning of diffuse light from a reduced (non-RSS) MEGARA image
+
+options:
+  -h, --help            show this help message and exit
+  -i INPUT-IMAGE, --input INPUT-IMAGE
+                        Reduced FITS image
+  -o OUTPUT-IMAGE, --output OUTPUT-IMAGE
+                        Output diffuse-light FITS image
+  -r RESIDUALS-IMAGE, --residuals RESIDUALS-IMAGE
+                        Output residual FITS image
+  -t MASTER-TRACES, --traces MASTER-TRACES
+                        Master traces JSON file
+  -s SHIFT-TRACES, --shift SHIFT-TRACES
+                        Traces shift
+  -w SEARCH-WINDOW, --window SEARCH-WINDOW
+                        Window around traces to search for non-illuminated
+                        fibers
+  -d DEGREE-POLY-COLS, --degree DEGREE-POLY-COLS
+                        Degree of polynomial fit for columns
+  -d2 DEGREE-POLY-ROWS, --degree-rows DEGREE-POLY-ROWS
+                        Degree of polynomial fit for rows
+  -p OUTPUT-PLOT, --outplot OUTPUT-PLOT
+                        Output plots
+  -b SPECTRAL-BINNING, --binning SPECTRAL-BINNING
+                        Binning in the spectral direction
+  -e EXCLUDE-REGION [EXCLUDE-REGION ...], --exclude EXCLUDE-REGION [EXCLUDE-REGION ...]
+                        Exclude region (c1 c2 r1 r2), e.g. 2407 2720 0 164
+  -2D, --two-dimensional
+                        Two-dimensional fitting?
