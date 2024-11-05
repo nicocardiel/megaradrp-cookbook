@@ -1,5 +1,5 @@
-id: 3_WaveCalib_HR-R
-mode: MegaraArcCalibration
+id: 3_WaveCalib_check_HR-R
+mode: MegaraLcbAcquisition
 instrument: MEGARA
 frames:
  - 0001312249-20170831-MEGARA-MegaraSuccess.fits
@@ -7,4 +7,4 @@ frames:
  - 0001312251-20170831-MEGARA-MegaraSuccess.fits
 requirements:
  extraction_offset: [0.0]
- store_pdf_with_refined_fits: 1
+ master_fiberflat: master_fiberflat_ones.fits
