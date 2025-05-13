@@ -1,0 +1,31 @@
+name: generate-pdf
+
+# Run manually
+on: workflow_dispatch
+  
+# This job installs dependencies, builds the cookbook 
+# and creates a pdf file
+jobs:
+  generate-pdf:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    # Setup python
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    # Build the docs
+    - name: Build the book
+      run: |
+        make latexpdf
+
+    - uses: actions/upload-artifact@v4
+      with:
+          path: build/latex/megara-cookbook.pdf
