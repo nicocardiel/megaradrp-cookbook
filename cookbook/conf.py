@@ -18,11 +18,12 @@
 # -- Project information -----------------------------------------------------
 
 project = 'megara-cookbook'
-copyright = '2018-2024, Universidad Complutense de Madrid'
-author = 'África Castillo-Morales, Sergio Pascual, Armando Gil de Paz, Nicolás Cardiel'
+copyright = '2018-2025, Universidad Complutense de Madrid'
+author = 'África Castillo-Morales, Sergio Pascual, Armando Gil de Paz,\nNicolás Cardiel, Mario Chamorro-Cazorla'
+# NOTE: see below for author list in LaTeX document
 
 # The full version, including alpha/beta/rc tags
-release = 'v1.0'
+release = '2025.05.16'
 
 
 # -- General configuration ---------------------------------------------------
@@ -67,5 +68,55 @@ html_theme_options = {
     #'show_related': True,
     #'show_relbar_bottom': True,
     #'show_relbar_top': False
+}
+
+# -- Options for LaTeX output -------------------------------------------------
+
+latex_elements = {
+    'preamble': r'''
+\usepackage{graphicx}
+\usepackage{transparent}
+''',
+    'maketitle': r'''
+\begin{titlepage}
+
+  \sffamily % Cambia a fuente sans serif
+  \bfseries
+  \parbox{\textwidth}{%
+  \centering
+
+  {\Huge MEGARA}
+
+  {\huge DATA REDUCTION COOKBOOK \par}
+
+  \vspace{1.0 cm}
+
+  {\Large
+  \begin{tabular}{c}
+  África Castillo-Morales \\
+  Sergio Pascual \\
+  Armando Gil de Paz \\
+  Nicolás Cardiel \\
+  Mario Chamorro-Cazorla
+  \end{tabular}
+
+  \vspace{1 cm}
+
+  \centerline{%
+  \includegraphics[width=0.95\paperwidth,keepaspectratio]{../../cookbook/_static/logo.png}%
+  }%end of centerline
+
+  \vspace{0.5 cm}
+
+  {\large Version: 2025.05.16}
+
+  {\large The most up-to-date version of this document is available at}
+
+  \vspace{2 mm}
+
+  {\large \url{https://guaix-ucm.github.io/megaradrp-cookbook/}}}
+  }%end of parbox
+\end{titlepage}
+''',
 }
 
