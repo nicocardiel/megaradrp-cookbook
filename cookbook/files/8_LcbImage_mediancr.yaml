@@ -13,7 +13,10 @@ requirements:
    bias: 0.0
    flatmin: 0.5
    flatmax: 2.5
+   knots_splfit: 3
    times_boundary_extension: 3.0
+   threshold: Null
+   minimum_max2d_rnoise: 5.0
    interactive: True
    dilation: 1
    plots: True
