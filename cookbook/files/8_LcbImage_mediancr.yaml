@@ -8,21 +8,23 @@ frames:
 requirements:
  method: mediancr
  method_kwargs:
+   find_double_cr: True
    gain: 1.6
    rnoise: 2.5
    bias: 0.0
    flatmin: 0.5
-   flatmax: 2.5
-   knots_splfit: 3
-   times_boundary_extension: 3.0
-   threshold: Null
+   flatmax: 1.5
+   knots_splfit: 2
+   nsimulations: 10000
+   times_boundary_extension: 1.0
+   threshold: 20
    minimum_max2d_rnoise: 5.0
    interactive: True
    dilation: 1
    plots: True
    semiwindow: 15
    color_scale: minmax
-   maxplots: 10
+   maxplots: -1
  extraction_offset: [+3.0]
  reference_extinction: extinction_LP.txt
  ignored_sky_bundles: [96] #[93, 94, 96, 97, 99, 100]
