@@ -6,9 +6,9 @@ CR not removed by median stacking
 
 .. warning::
 
-   This functionality is still in development... please do not use it until
-   this warning notice is removed.
-
+  This functionality is still in the development phase and is not yet fully 
+  consolidated. Some future modifications may be introduced as more testing 
+  is conducted with new images.
 
 The different recipes in MEGARA DRP use by default a median combination of
 three or more images to obtain an average exposure and thus eliminate cosmic
@@ -37,8 +37,9 @@ used by MEGARA DRP.
    By properly adjusting the detection parameters, **typically by trial and
    error**, it is possible to minimize the number of false detections. On the
    other hand, the signal in pixels affected by a false multiple cosmic ray
-   detection is replaced by the minimum value at each pixel (across the
-   available exposures), so the impact on the combined image is not expected to
+   detection is replaced either by the minimum value at each pixel (across the
+   available exposures) or by the median (depending on the chosen combination
+   method), so the impact on the combined image is not expected to
    be severe. The benefit of automatically removing pixels affected by more
    than one cosmic ray in the different exposures can outweigh this effect.
 
@@ -78,11 +79,32 @@ The main workflow to apply the method is as follows:
 3. **Run the MEGARA DRP to generate the reduced scientific result**: Once the
    file ``crmasks.fits`` is in the `data/` subdirectory, the MEGARA DRP can
    be run again to generate the reduced scientific result, using for that
-   purose the corresponding YAML file. In this step, the user should choose
+   purpose the corresponding YAML file. In this step, the user should choose
    between the different available strategies to combine and remove the cosmic
    rays. In particular, instead of assuming that the combination method is
    ``median``, the user should specify one of the following methods in the
-   requirements section: ``mediancr``, ``meancr`` or ``meancrt``.
+   requirements section: ``mediancr``, ``meancrt`` or ``meancr``.
+
+.. note::
+
+   The three available combination methods, ``mediancr``, ``meancrt`` and 
+   ``meancr``, produce different results:
+
+   - ``mediancr``: provides the median combination, replacing pixels 
+     suspected of having been affected by a cosmic ray in more than one
+     exposure by the minimum value at each pixel across the available exposures.
+   - ``meancrt``: generates the mean combination, making use of a single mask 
+     that stores the cosmic rays detected in all the individual exposures,
+     replacing the masked pixels by the value obtained when using
+     the ``mediancr`` method.
+   - ``meancr``: provides the mean combination, making use of an individual 
+     mask specifically computed for each available exposure.
+
+   Since the mean has a lower standard deviation than the median, the 
+   ``meancrt`` and ``meancr`` methods are initially preferable. Among these
+   two, the tests conducted suggest that the ``meancr`` method tends to yield better
+   results. In any case, it is recommended to use all three combination
+   methods and compare the resulting outputs.
 
 Preparing the observation result file
 =====================================
@@ -159,16 +181,16 @@ crosses. The orange, green and red lines are an extension of the blue line
 to be placed above the red crosses (this is performed by adding a different
 weight to the vertical distance between the fitted points, depending on their
 location above/below the previous fit). The resulting final fit can be employed
-to define an exclusion boundary, so pixels that lie above this line are
+to define a detection boundary, so pixels that lie above this line are
 suspected of having been affected by a cosmic ray in more than one exposure.
 
-The exclusion boundary is plotted again in the right image. In this
+The detection boundary is plotted again in the right image. In this
 case we can see that there are a very large number of pixels above the
-exclusion boundary, which is not a good sign. This means that the different
+detection boundary, which is not a good sign. This means that the different
 exposures are not equivalent, and the method will likely produce a large
 number of false positives. In this case, it is recommended to stop the
-execution, modify the YAML file to include the option to rescale de images, and
-run the program again. 
+execution, modify the YAML file to include the option to rescale the images,
+and run the program again.
 
 Checking the flux level of the individual exposures
 ---------------------------------------------------
@@ -230,7 +252,7 @@ When necessary, the flux factors can be specified directly specified as a
 requirement in the YAML file, as follows: ``flux_factor: [0.78, 1.01, 1.11]``
 (with one value of each individual exposure).
 
-Note that the exclusion boundary in the last diagnostic diagram is extended
+Note that the detection boundary in the last diagnostic diagram is extended
 below zero and above the maximum value of the ``min2d - bias`` axis.
 
 Detecting suspected double cosmic rays in the median combination
@@ -238,12 +260,13 @@ Detecting suspected double cosmic rays in the median combination
 
 Once we are satisfied with the comparison of the diagnostic diagrams
 corresponding to the simulated and actual data, the program proceeds with the
-computed exclusion boundary.
+computed detection boundary.
 
 The diagnostic diagram is shown again, but in this case not as a 2D histogram,
 but as a scatter plot, where the red crosses indicate the pixels that are
 suspected of having been affected by a cosmic ray in more than one exposure,
-with the total number of affected pixels displayed in the legend.
+with the total number of affected pixels displayed in the legend. This plot
+is saved in the *work/* subdirectory with the name ``diagnostic_mediancr.png``.
 
 .. image:: _static/crmasks/diagnostic_mediancr.png
    :width: 100%
@@ -258,7 +281,7 @@ file. In this case, the initial 256 pixels are expanded to 1592 pixels after
 applying the dilation factor of 1. After this process, these pixels are then 
 grouped when they form a connected cluster (each group being an individual CR 
 hit affecting contiguous pixels). These CR detections are then sorted using the 
-distance above the exclusion boundary, so they can be displayed in order,
+distance above the detection boundary, so they can be displayed in order,
 starting with the pixels most likely to have been affected by two cosmic rays.
 
 For each case, a figure like the one shown below is generated in a file
@@ -289,19 +312,27 @@ combination, the program proceeds to detect suspected cosmic rays in the
 mean combination. Note that this ``mean2d`` image contains the CR of all the
 individual exposures.
 
-The resulting diagnostic diagram is shown below,
-where the red crosses indicate the pixels that are suspected of having been
-affected by a cosmic ray in the combined exposure.
+The resulting diagnostic diagram is shown below, where the red crosses indicate the pixels that are suspected of having been affected by a cosmic 
+ray in the combined exposure. This plot is saved in the *work/* subdirectory 
+with the name ``diagnostic_meancr.png``.
 
 .. image:: _static/crmasks/diagnostic_meancr.png
    :width: 100%
    :alt: diagnostic diagram for mean
 
+The number of pixels suspected of having been affected by a cosmic ray in the
+mean combination is, not surprisingly, much larger than what was found in the
+median combination. In this case, 82171 pixels have been flagged as suspected of
+having been affected by a cosmic ray. This number increases to 296655 when
+applying the dilation factor of 1.
 
 Detecting cosmic rays in the individual exposures
 -------------------------------------------------
 
 The program also generates diagnostic diagrams for each individual exposure.
+These plots are saved in the *work/* subdirectory with the names
+``diagnostic_crmask1.png``, ``diagnostic_crmask2.png``, and
+``diagnostic_crmask3.png`` (one for each individual exposure). 
 
 .. image:: _static/crmasks/diagnostic_crmask1.png
    :width: 30%
@@ -315,10 +346,19 @@ The program also generates diagnostic diagrams for each individual exposure.
    :width: 30%
    :alt: diagnostic diagram for third individual exposure
 
+In this case, the data plotted in the vertical axis is the initial 
+``median2d - min2d`` but scaled by the corresponding flux factor for each 
+individual exposure.
+
+When computing the mask for each individual exposure, the code imposes that
+the masked pixels in each individual mask must be also masked in the mask
+associated to the mean combination previously described.
+
+
 Output file ``crmasks.fits``
 ----------------------------
 
-The output file ``crmasks.fits`` is generated in the *results* subdirectory, 
+The output file ``crmasks.fits`` is generated in the *results/* subdirectory, 
 and contains several extensions:
 
 .. code-block:: console
@@ -335,7 +375,18 @@ and contains several extensions:
      5  CRMASK3       1 ImageHDU         8   (4096, 4112)   uint8   
 
 Note the primary HDU only contains keywords with information concerning
-the parameters used to generate the masks.
+the parameters used to generate the masks. The extensions contain the
+different masks computed by the program:
+
+- ``MEDIANCR``: the mask for the pixels suspected of having been affected by
+  two cosmic rays in the median combination.
+- ``MEANCRT``: the mask for the pixels suspected of having been affected by
+  a cosmic ray in the mean combination.
+- ``CRMASK1``, ``CRMASK2``, ``CRMASK3``: the masks for the pixels suspected
+  of having been affected by a cosmic ray in the individual exposures.
+
+In all cases, the pixels suspected of having been affected by a cosmic ray
+are set to 1, while the rest of the pixels are set to 0.
 
 Do not forget to copy the file ``crmasks.fits`` to the `data/` subdirectory
 before running the MEGARA DRP to generate the reduced scientific result.
@@ -347,66 +398,64 @@ before running the MEGARA DRP to generate the reduced scientific result.
 Additional program parameters
 -----------------------------
 
-The program that generates the CR masks assumes several default values for
-the relevant parameters. These parameters can be modified by setting their
+The reduction recipe that generates the CR masks assumes several default values
+for the relevant parameters. These parameters can be modified by setting their
 values in requirements section of the YAML file.
 
-- ``gain``: detector gain (electron/ADU). Although the MEGARA detector
-  exhibits two different gains (1.60 and 1.73; one value for each detector
-  half), here we can use a single value.  This is not critical because the two
-  values are not very different and the detection criterium is more sensitive
-  to the following parameters.
-- ``rnoise``: readout noise (ADU)
-- ``bias`` (default value 0.0): bias value (ADU). **This must be set to zero
-  for MEGARA because the code that applies the mediancr method receives
-  preprocessed exposures where the overscan level has already been
-  subtracted.**
-- ``flux_variation_min`` (default 1.0): minimum simulated flux variation
-  value.
-- ``flux_variation_max`` (default 1.0): maximum simulated flux variation value.
-  The simulated data is modified by a multiplicative factor that is randomly
-  chosen from a uniform distribution ranging from ``flux_variation_min`` to
-  ``flux_variation_max``.
-- ``ntest`` (default 100): number of points along the x-axis in the diagnostic
-  diagram to sample for the boundary.
-- ``knots_splfit`` (default 3): number of inner knots employed in the spline
-  fit to the simulated boundary data.
-- ``nsimulations`` (default 10000): number of simulations to perform for each
-  point in the exclusion boundary.
-- ``times_boundary_extension`` (default 3.0): number of times that the vertical
-  distance between the percentiles 98 and 50 of the simulated data is employed
-  to define the exclusion boundary beyond the percentile 98.
-- ``threshold`` (default Null; this value in the YAML file is converted to None
-  in Python): minimum threshold for ``median2d - min2d`` to consider a pixel as
-  a double cosmic ray. If None, the threshold is computed automatically from
-  the minimum boundary value in the numerical simulations.
+- ``gain``: detector gain (electron/ADU). This parameter is kept in order to
+  reuse the code for other instruments. As previously mentioned, since the
+  MEGARA exposures are preprocessed prior the CR masks generation (and the
+  data converted from ADU to electrons), gain is assumed to be 1.0.
+- ``rnoise``: readout noise (ADU). In the case of MEGARA, here the code assumes
+  a value of 3.4 electrons, which is the readout noise of the MEGARA detector
+  (see the keywords RDNOISE1 and RDNOISE2 in the FITS headers). 
+- ``bias`` (default value 0.0): bias value (ADU). This also must be set to zero
+  for MEGARA because the bias level is also part of the preprocessing
+  performed by the MEGARA DRP.
+- ``flux_factor`` (default ``none``): this parameter can be set to a list of
+  values, one for each individual exposure, or to ``auto``. If set to ``auto``,
+  the program will compute the flux factor for each individual exposure by
+  examining the ratio between each individual exposure and the median. 
+  If set to ``none``, all the exposures are assumed to be equivalent (i.e., the flux
+  factor is set to 1.0 for each exposure). A single float number (e.g. 1.0) can
+  also be specified, which means that all the exposures are assumed to have the
+  same flux factor.
+- ``knots_splfit`` (default 3): total number of knots employed in the spline
+  fit employed to define the detection boundary.
+- ``nsimulations`` (default 10): number of simulations to perform for each
+  set of individual exposures in order to generate the simulated diagnostic
+  diagram.
+- ``niter_boundary_extension`` (default 3): number of iterations to
+  extend the detection boundary above the red crosses in the diagnostic
+  diagram.
+- ``weight_boundary_extension`` (default 10): weight to apply to the
+  vertical distance between the fitted points in the diagnostic diagram when
+  extending the detection boundary above the red crosses. The points above the
+  previous fit are multiplied by this value raised to the power of the
+  iteration number. This forces the fit to accommodate near the upper
+  boundary defined by the red crosses in the simulated diagnostic diagram.
+- ``threshold`` (default 0.0): minimum threshold for ``median2d - min2d`` in
+  the diagnostic diagrams. This is an additional constraint in addition to the
+  detection boundary, so pixels that are below this threshold are not
+  considered as suspected.
 - ``minimum_max2d_rnoise`` (default 5.0): minimum value of ``max2d`` in
   readout noise units to consider a pixel as a double cosmic ray. This avoids
   false positives when a pixel exhibits a large negative value in one of the
   individual exposures.
-- ``interactive`` (default False): if True, the code generates an interactive
-  matplotlib plot with the diagnostic diagram (allowing the user to use the
-  zoom and pan buttons). It is very convenient to set this parameter to True,
-  interactively examine the diagnostic diagram, stop the program execution, and
-  try changing the values of ``flux_variation_min``, ``flux_variation_max``,
-  ``times_boundary_extension`` and ``threshold``. Other parameters such as
-  ``rnoise`` and ``gain`` can also be modified, although the user should take
-  into account that the objective is to find an automatic way to select
-  uncorrected cosmic rays, not to make use of realistic values of gain, readout
-  or readout noise. Note that the values of ``flux_variation_min`` and
-  ``flux_variation_max`` can be used to allow the simulations to account, to
-  some extent, for the effect of signal variations in different MEGARA
-  exposures. This can happen, for example, in sky lines (when exposure times
-  are long), or due to small shifts in the telescope pointing.
+- ``interactive`` (default True): if True, the code generates interactive
+  matplotlib plots, allowing the user to use the
+  zoom and pan buttons. If False, the code runs without displaying the plots,
+  but they are still saved in the *work/* subdirectory.
 - ``dilation`` (default 1): the pixels composing each cosmic ray can be
   surrounded by a dilation factor, which expands the mask around the detected
   cosmic ray pixels. A value of zero means that no dilation is applied.
   Typically a value of 1 is useful, since it allow to replace the tails of
   cosmic rays (whose pixels exhibit a lower signal).
-- ``plots`` (default False): if True, a PDF file called
-  ``mediancr_identified_cr.pdf`` is generated with the individual double cosmic
-  rays identified. Note that enabling this option may introduce a noticeable
-  penalty in execution time.
+- ``seed`` (default None): the random seed used to generate the simulated
+  diagnostic diagram. If None, the seed is randomly generated.
+- ``plots`` (default True): if True, a PDF file called
+  ``mediancr_identified_cr.pdf`` is generated with some or all the individual 
+  double cosmic rays identified.
 - ``semiwindow`` (default 15): the semiwindow size (pixels) to plot the double
   cosmic rays. Only used if ``plots`` is True.
 - ``color_scale`` (default minmax): the color scale employed in the
@@ -414,15 +463,242 @@ values in requirements section of the YAML file.
   valid options are minmax and zscale.
 - ``maxplots`` (default 10): the maximum number of suspicious double cosmic
   rays to display. Note that setting a limit is useful when experimenting with
-  the previous values of ``gain``, ``rnoise``, etc., as it prevents generating
-  an excessively large number of plots due to false positive detections. A
-  negative value indicates that all the suspected double CR are displayed. This
-  option is only used if ``plots`` is True.
+  the program parameters, as it prevents generating an excessively large number
+  of plots due to false positive detections. A negative value indicates that 
+  all the suspected double CR are displayed (note that enabling this may 
+  introduce a noticeable penalty in execution time). This option is only used 
+  if ``plots`` is True.
+- ``save_preprocessed`` (default False): if True, the program saves the
+  preprocessed individual exposures in the *work/* subdirectory. This is useful
+  for debugging purposes, but it is not necessary for the normal operation of
+  the program.
 
 Applying the masks
 ==================
 
-**The signal in the suspected pixels is replaced, in the** ``median2d``
-**image, by the corresponding** ``min2d`` **value.** This means that the
-resulting image is identical to ``median2d``, except for those corrected
-pixels.
+Once the file ``crmasks.fits`` has been generated, it can be used to
+remove the suspected double cosmic rays from the combined image. In this sense,
+several options are available, depending on the value of ``method`` in the
+requirements section of the YAML file used to generate the reduced scientific
+result. In this sense, instead of assuming that the combination method is
+``median`` (default value in MEGARA DRP), the user should specify one of the 
+following methods: ``mediancr``, ``meancr`` or ``meancrt``. 
+
+Method ``mediancr``
+-------------------
+
+For example, when using the recipe **MegaraLcbImage**, the corresponding
+YAML file, ``8_LcbImage.yaml`` should define the ``method`` and the 
+``crmasks`` parameters in the requirements section, as follows:
+
+.. literalinclude:: files/8_LcbImage_mediancr.yaml
+   :language: yaml
+   :linenos:
+   :lineno-start: 1
+   :emphasize-lines: 2, 9-10
+
+Note that it is necessary to explicitly specify the ``crmasks`` parameter,
+which should point to the file ``crmasks.fits`` generated in the previous step.
+On the other hand, this allows the user to rename this file, placing different
+versions of it generated with different detection boundaries and testing the
+effect of using different masks.
+
+.. code-block:: console
+
+   (megara) $ numina run 8_LcbImage.yaml -r control.yaml
+
+When using ``method: mediancr``, the MEGARA DRP will read the mask stored in 
+the extension ``MEDIANCR`` of the file ``crmasks.fits``. The masked pixels,
+which are suspected of having been affected by a cosmic ray in more that one
+exposure, are replaced by the corresponding ``min2d`` value at each pixel
+This means that the resulting image is identical to ``median2d``, except 
+for those corrected pixels.
+
+Method ``meancrt``
+------------------
+
+.. literalinclude:: files/8_LcbImage_meancrt.yaml
+   :language: yaml
+   :linenos:
+   :lineno-start: 1
+   :emphasize-lines: 2, 9-10
+
+When using ``method: meancrt``, the MEGARA DRP will read the mask stored in 
+the extension ``MEANCRT`` of the file ``crmasks.fits``. The masked pixels,
+which are suspected of having been affected by a cosmic ray are replaced by 
+the corresponding value when using ``method: mediancr``. 
+
+This means that the resulting image is identical to ``mean2d``, except 
+for those corrected pixels, where the information is taken from the 
+image obtained by applying the ``mediancr`` method.
+
+
+Method ``meancr``
+-----------------
+
+.. literalinclude:: files/8_LcbImage_meancr.yaml
+   :language: yaml
+   :linenos:
+   :lineno-start: 1
+   :emphasize-lines: 2, 9-10
+
+When using ``method: meancr``, the MEGARA DRP will read the masks stored in 
+the extensions ``CRMASK1``, ``CRMASK2`` and ``CRMASK3`` of the file 
+``crmasks.fits``. The program makes use of the functionality provided by 
+the numpy masked arrays to build a 3D stack of the individual exposures,
+where the masked pixels associated to each individual image are employed to
+define the corresponding masked array. This allows to compute the mean along
+the axis corresponding to the image number, so the resulting image is
+the mean of the individual exposures, excluding the masked pixels.
+
+In this case, it is possible to have pixels which are masked in all the
+individual exposures. In this case, the resulting pixel in the combined image
+will be set to the ``min2d`` value at that pixel.
+
+Using the command line script
+=============================
+
+It is also possible to compute the CR masks and to apply them directly in
+an arbitray set of images using the command line script
+``numina-crmasks``.
+
+For example, one can execute the **MegaraCrDetection** recipe using the
+requirement ``save_preprocessed: True`` in the YAML file, so the
+preprocessed individual exposures are saved in the *work/* subdirectory 
+with the names ``preprocessed_1.fits``, ``preprocessed_2.fits``, and
+``preprocessed_3.fits``.
+
+.. code-block:: console
+
+   (megara) $ cd obsid8_LcbImage_LR-R_crmasks_work
+   (megara) $ ls preprocessed_*.fits > list.txt
+   (megara) $ cat list.txt
+   preprocessed_1.fits
+   preprocessed_2.fits
+   preprocessed_3.fits
+
+The script ``numina-crmasks`` must be executed twice: first to compute the
+CR masks, and then to apply them to the individual exposures.
+
+Step 1: masks generation
+------------------------
+
+.. code-block:: console
+
+   (megara) $ $ numina-crmasks compute \
+   --inputlist list.txt \
+   --gain 1.0 \
+   --rnoise 3.4 \
+   --flux_factor '[0.78, 1.01, 1.11]' \
+   --interactive \
+   --output_masks crmasks.fits
+
+Note that in this case it is important to specify the gain and readout noise.
+The flux factor is also specified: in this case we are providing the individual
+values for each individual exposure. Note that the numbers are given as a
+quoted string. The output file is called ``crmasks.fits``, but any other
+name can be used.
+
+The full list of available parameters can be obtained by executing:
+
+.. code-block:: console
+
+   (megara) $ numina-crmasks compute --help
+   usage: numina-crmasks compute [-h] --inputlist INPUTLIST [--gain GAIN]
+                                 [--rnoise RNOISE] [--bias BIAS]
+                                 [--flux_factor FLUX_FACTOR]
+                                 [--knots_splfit KNOTS_SPLFIT]
+                                 [--nsimulations NSIMULATIONS]
+                                 [--niter_boundary_extension NITER_BOUNDARY_EXTENSION]
+                                 [--weight_boundary_extension WEIGHT_BOUNDARY_EXTENSION]
+                                 [--threshold THRESHOLD]
+                                 [--minimum_max2d_rnoise MINIMUM_MAX2D_RNOISE]
+                                 [--interactive] [--dilation DILATION]
+                                 [--output_masks OUTPUT_MASKS] [--plots]
+                                 [--semiwindow SEMIWINDOW]
+                                 [--color_scale {minmax,zscale}]
+                                 [--maxplots MAXPLOTS] [--extname EXTNAME]
+
+   options:
+     -h, --help            show this help message and exit
+     --inputlist INPUTLIST
+                           Input text file with list of 2D arrays.
+     --gain GAIN           Detector gain (ADU)
+     --rnoise RNOISE       Readout noise (ADU)
+     --bias BIAS           Detector bias (ADU, default: 0.0)
+     --flux_factor FLUX_FACTOR
+                           Flux factor to be applied to each image
+     --knots_splfit KNOTS_SPLFIT
+                           Total number of knots for the spline fit to the
+                           detection boundary (default: 3)
+     --nsimulations NSIMULATIONS
+                           Number of simulations to compute the detection
+                           boundary (default: 10)
+     --niter_boundary_extension NITER_BOUNDARY_EXTENSION
+                           Number of iterations for the extension of the
+                          detection boundary (default: 3)
+     --weight_boundary_extension WEIGHT_BOUNDARY_EXTENSION
+                           Weight for the detection boundary extension (default:
+                           10)
+     --threshold THRESHOLD
+                           Minimum threshold for median2d - min2d to flag a pixel
+                           (default: None)
+     --minimum_max2d_rnoise MINIMUM_MAX2D_RNOISE
+                           Minimum value for max2d in rnoise units to flag a
+                           pixel (default: 5.0)
+     --interactive         Interactive mode for diagnostic plot (program will
+                           stop after the plot)
+     --dilation DILATION   Dilation factor for cosmic ray mask
+     --output_masks OUTPUT_MASKS
+                           Output FITS file for the cosmic ray masks
+     --plots               Generate plots with detected double cosmic rays
+     --semiwindow SEMIWINDOW
+                           Semiwindow size for plotting double cosmic rays
+     --color_scale {minmax,zscale}
+                           Color scale for the plots (default: 'minmax')
+     --maxplots MAXPLOTS   Maximum number of double cosmic rays to plot (-1 for
+                           all)
+     --extname EXTNAME     Extension name in the input arrays (default:
+                           'PRIMARY')
+
+Step 2: masks application
+-------------------------
+
+The second step is to apply the generated masks, making use of the desired
+combination method: ``mediancr``, ``meancrt`` or ``meancr``. For example, to
+apply the masks using the ``mediancr`` method, one can execute:
+
+.. code-block:: console
+
+   (megara) $ numina-crmasks apply \
+   --inputlist list.txt \
+   --input_mask crmasks.fits \
+   --output_combined result.fits \
+   --combination mediancr
+
+In this example, the combined image is saved in the file ``result.fits``.
+
+Full details of the available parameters can be obtained by executing:
+
+.. code-block:: console
+
+   (megara) $ numina-crmasks apply --help
+   usage: numina-crmasks apply [-h] --inputlist INPUTLIST
+                               --input_mask INPUT_MASK
+                               --output_combined OUTPUT_COMBINED
+                               [--combination {mediancr,meancrt,meancr}]
+                               [--extname EXTNAME]
+
+   options:
+     -h, --help            show this help message and exit
+     --inputlist INPUTLIST
+                           Input text file with list of 2D arrays.
+     --input_mask INPUT_MASK
+                           Input FITS file with the cosmic ray masks
+     --output_combined OUTPUT_COMBINED
+                           Output FITS file with the combined image
+     --combination {mediancr,meancr,meancrt}
+                           Combination method to apply the masks (default:
+                           mediancr)
+     --extname EXTNAME     Extension name in the input arrays (default:
+                           'PRIMARY')
