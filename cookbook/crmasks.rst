@@ -4,6 +4,12 @@
 CR not removed by median stacking
 *********************************
 
+.. warning::
+
+   This functionality is still in development... please do not use it until
+   this warning notice is removed.
+
+
 The different recipes in MEGARA DRP use by default a median combination of
 three or more images to obtain an average exposure and thus eliminate cosmic
 rays. However, when exposure times are long, it is not uncommon for the same
@@ -18,16 +24,7 @@ automatic procedure of this kind has been introduced in the **numina** package,
 which can be easily invoked by modifying the default image combination method
 used by MEGARA DRP.
 
-.. warning::
-
-   This functionality is still in development... please do not use it until
-   this warning notice is removed.
-
-
-The mediancr method
-===================
-
-.. warning::
+.. note::
 
    It is important to note that the ad hoc method described here is susceptible
    to detecting false positives and should be tested and compared with the
@@ -49,13 +46,84 @@ The mediancr method
    long exposure times. In general, it is not recommended for the reduction of
    calibration images.
 
-The method can only be employed when there are three or more exposures
-available, and is based on detecting pixels that simultaneously verify three
-different criteria. The first two of them are shown in the following figure,
-which is automically generated in the *work* subdirectory with the name
-``mediancr_diagnostic.png``.
+Overall description
+===================
 
-.. image:: _static/mediancr/mediancr_diagnostic.png
+The method can only be employed when there are three or more **equivalent**
+exposures available, and is based on detecting pixels that exhibit an 
+unexpected location in a diagnostic diagram built using the median and the 
+minimum signal of each pixel across the different exposures.
+
+For the method to work correctly, it is necessary to ensure that the different
+exposures are really equivalent, meaning that they should exhibit the same
+signal level at each pixel except the expected random noise. Small changes in
+the signal level between the different exposures can be tolerated, but large
+differences can lead to a large number of false positives.
+
+The method is intended to be used with the MEGARA DRP, although it can also
+be applied directly from the command line using the **numina** script
+``numina-crmasks``, which is also described later in this document.
+
+The main workflow to apply the method is as follows:
+
+1. **Prepare the observation result file**: The YAML file that contains the
+   list of individual exposures and additional requirements for a specific
+   reduction recipe associated to the observing mode
+   ``mode: MegarCrDetection``.
+2. **Run the MEGARA DRP to generate the CR masks**: The execution of the MEGARA
+   DRP with this YAML file is interactive (see below), and the result if a FITS
+   file, called ``crmasks.fits`` that contains several masks that can be
+   employed later to remove the cosmic rays using different strategies. This
+   file must be copied to the `data/` subdirectory.
+3. **Run the MEGARA DRP to generate the reduced scientific result**: Once the
+   file ``crmasks.fits`` is in the `data/` subdirectory, the MEGARA DRP can
+   be run again to generate the reduced scientific result, using for that
+   purose the corresponding YAML file. In this step, the user should choose
+   between the different available strategies to combine and remove the cosmic
+   rays. In particular, instead of assuming that the combination method is
+   ``median``, the user should specify one of the following methods in the
+   requirements section: ``mediancr``, ``meancr`` or ``meancrt``.
+
+Preparing the observation result file
+=====================================
+
+Let's assume that we have three initially equivalent exposures. The initial
+YAML file is ``8_generate_crmasks.yaml``, which contains the list of
+individual exposures.
+
+.. literalinclude:: files/8_generate_crmasks_1.yaml
+   :language: yaml
+   :linenos:
+   :lineno-start: 1
+   :emphasize-lines: 2
+
+This initial file is quite simple: one only has to take care of specifying
+``mode: MegarCrDetection``, so the MEGARA DRP will know that the
+``8_generate_crmasks.yaml`` file is intended to generate the CR masks. The
+other important point is to ensure that the list of individual exposures
+contains three or more equivalent exposures.
+
+Computing the CR masks
+======================
+
+Initial execution
+-----------------
+
+The recipe is run by doing:
+
+.. code-block:: console
+
+   (megara) $ numina run 8_generate_crmasks.yaml -r control.yaml
+
+After some time (typically around one minute, that is needed to perform
+the required numerical simulations), the program generates the
+following plot, showing the diagnostic diagram to detect double cosmic rays
+in the median combination. This plot is saved in the *work* subdirectory
+with the name ``diagnostic_histogram2d.png``. The figure is also displayed, so
+the user can interactively examine it and stop the program execution if
+necessary.
+
+.. image:: _static/crmasks/diagnostic_histogram2d_1.png
    :width: 100%
    :alt: diagnostic diagram to detect double cosmic rays in median combination
 
@@ -65,44 +133,223 @@ the individual exposures) that contain the minimum value ``min2d``, maximum
 value ``max2d``, and median value ``median2d`` at each pixel along the sequence
 of available exposures. On the vertical axis of the previous figure, the
 difference between the ``median2d`` and ``min2d`` of each pixel is shown, while
-the horizontal axis displays ``min2d - bias``.  The different solid lines
-correspond to the result of performing numerical simulations using the gain,
-readout noise, bias, and two ad hoc parameters that can take into account flux
-variations between different exposures. These simulations are computed for
-discrete values of ``min2d - bias`` (represented as filled circles overimposed
-on the lines). For each of these values, the percentiles 50 and 98 are
-computed. Since the simulated values are unavoidably noisy, the predictions are
-fitted using splines (dashed lines). The exclusion boundary (orange line) is
-computed by extending the difference between the spline fit to the percentiles
-98 and 50 beyond the spline fit to the percentile 98. This extension is
-controlled by a parameter named ``times_boundary_extension`` (see below).
-Pixels that lie above the calculated exclusion boundary and above a minimum
-threshold in the vertical axis of the figure (dotted gray line) are initially
-flagged as suspected of having been hit by a cosmic ray in more than one
-exposure.  An additional requirement (not shown) is imposed: the considered
-pixel must have a ``max2d`` value above three times the readout noise (this
-avoids pixels with negative signal very close to the bias level in the raw
-images). The final set of suspected pixels are plotted with red x's in the
-figure, with the total number of pixels displayed in the legend.
+the horizontal axis displays ``min2d - bias``.  
 
-**The signal in the suspected pixels is replaced, in the** ``median2d``
-**image, by the corresponding** ``min2d`` **value.** This means that the
-resulting image is identical to ``median2d``, except for those corrected
-pixels.
+Note that the diagnostic diagram, which is actually a 2D histogram in the 
+previous plot, is shown twice: the left image is the result
+of running a predefined number of simulations (10 in this example; this number
+can be modified), using the `median2d` data to generate synthetic exposures, 
+using for that purpose the gain, readout noise and bias values. Note that in
+the case of MEGARA, the individual exposures are preprocessed prior to the
+generation of the diagnostic diagram, including overscan subtraction, trimming, 
+and gain correction (data is transformed from ADU to electrons). For that 
+reason, the code assume that gain=1.0, the readout noise = 3.4 electrons
+(see the keywords RDNOISE1 and RDNOISE2 in the FITS headers), and bias = 0
+electrons.
 
-To apply this combination method, it is necessary to explicitly specify that
-``mediancr`` should be used (instead of the default ``median`` method) 
-in the requirements list of the observation result file. For example:
+The right image is directly the same diagnostic diagram, but using the actual
+data from the individual exposures.
 
-.. literalinclude:: files/8_LcbImage_mediancr.yaml
+Returning to the left image, at each bin in the horizontal axis, the histogram
+data is converted to a cumulative distribution function (CDF), and the red 
+crosses indicate the ``median2d - min2d`` values at which the probability of 
+finding a single pixel above them is low enough so one only expects one pixel 
+to be above those values. The blue solid line is a spline fit to the red
+crosses. The orange, green and red lines are an extension of the blue line
+to be placed above the red crosses (this is performed by adding a different
+weight to the vertical distance between the fitted points, depending on their
+location above/below the previous fit). The resulting final fit can be employed
+to define an exclusion boundary, so pixels that lie above this line are
+suspected of having been affected by a cosmic ray in more than one exposure.
+
+The exclusion boundary is plotted again in the right image. In this
+case we can see that there are a very large number of pixels above the
+exclusion boundary, which is not a good sign. This means that the different
+exposures are not equivalent, and the method will likely produce a large
+number of false positives. In this case, it is recommended to stop the
+execution, modify the YAML file to include the option to rescale de images, and
+run the program again. 
+
+Checking the flux level of the individual exposures
+---------------------------------------------------
+
+We accomplish this by adding the requirement 
+``flux_factor: auto``. By default, this parameter is set to ``none``, which
+means that all the exposures are assumed to be equivalent (internally the
+code transforms this parameter to ``1.0`` for each exposure).
+
+.. literalinclude:: files/8_generate_crmasks_2.yaml
    :language: yaml
    :linenos:
    :lineno-start: 1
-   :emphasize-lines: 9-27
+   :emphasize-lines: 8-9
 
-It is important to note that, in addition to specifying the method as ``method:
-mediancr``, some additional parameters must also be provided under the
-``method_kwargs:`` key, in particular:
+.. code-block:: console
+
+   (megara) $ numina run 8_generate_crmasks.yaml -r control.yaml
+
+In this case, the program generates new 2D histograms, computing the number
+of pixels for different reasonable combinations of the ratio between each
+individual exposure and the median of the three exposures. In principle, this
+ratio should be close to 1.0, but the program examines a range between 0.5 and
+1.5.
+
+.. image:: _static/crmasks/flux_factor1.png
+   :width: 100%
+   :alt: computation of the flux factor for the first exposure
+
+.. image:: _static/crmasks/flux_factor2.png
+   :width: 100%
+   :alt: computation of the flux factor for the second exposure
+
+.. image:: _static/crmasks/flux_factor3.png
+   :width: 100%
+   :alt: computation of the flux factor for the third exposure
+
+The 2D histograms is shown twice: the left image is the actual histogram, 
+whereas the right image is the first histogram after applying a cleaning
+procedure to remove isolated pixels. The program then computes a spline fit at
+each side of the vertical bin that contains the 1.0 value (blue and red
+solid lines), and finds the mode
+at both sides (above and below the 1.0 value). This helps to determine an
+approximate scaling factor that takes into account the flux corresponding to
+the pixels with the higher signal.
+
+In this example, it seems clear that the first exposure exhibits a lower flux
+(by a factor of around 0.78), the second exposure is very close to the unity
+(factor 1.01), and the third exposure is slightly higher (factor 1.11). These
+factors are then employed when generating the simulated diagnostic diagram,
+which in this case is more similar to the one generated using the actual data
+from the individual exposures.
+
+.. image:: _static/crmasks/diagnostic_histogram2d_2.png
+   :width: 100%
+   :alt: diagnostic diagram to detect double cosmic rays in median combination
+
+When necessary, the flux factors can be specified directly specified as a 
+requirement in the YAML file, as follows: ``flux_factor: [0.78, 1.01, 1.11]``
+(with one value of each individual exposure).
+
+Note that the exclusion boundary in the last diagnostic diagram is extended
+below zero and above the maximum value of the ``min2d - bias`` axis.
+
+Detecting suspected double cosmic rays in the median combination
+----------------------------------------------------------------
+
+Once we are satisfied with the comparison of the diagnostic diagrams
+corresponding to the simulated and actual data, the program proceeds with the
+computed exclusion boundary.
+
+The diagnostic diagram is shown again, but in this case not as a 2D histogram,
+but as a scatter plot, where the red crosses indicate the pixels that are
+suspected of having been affected by a cosmic ray in more than one exposure,
+with the total number of affected pixels displayed in the legend.
+
+.. image:: _static/crmasks/diagnostic_mediancr.png
+   :width: 100%
+   :alt: diagnostic diagram for mediancr
+
+In this particular example, 256 pixels have been flagged as suspected of
+having been affected by a cosmic ray in more than one exposure. These pixels
+are then surrounded by a 1-pixel-wide border, so nearby pixels that are
+only slightly affected by the same cosmic ray can be included. This dilation
+factor can be modified by setting the requirement ``dilation`` in the YAML 
+file. In this case, the initial 256 pixels are expanded to 1592 pixels after
+applying the dilation factor of 1. After this process, these pixels are then 
+grouped when they form a connected cluster (each group being an individual CR 
+hit affecting contiguous pixels). These CR detections are then sorted using the 
+distance above the exclusion boundary, so they can be displayed in order,
+starting with the pixels most likely to have been affected by two cosmic rays.
+
+For each case, a figure like the one shown below is generated in a file
+called ``mediancr_identified_cr.pdf`` in the *work* subdirectory. Note that
+this figure is not shown interactively, so the user should open it after
+the program finishes its execution. By default, only the first 10 suspected
+double cosmic rays are displayed, but this can be modified by setting the
+requirement ``maxplots`` in the YAML file (a negative number indicates that all the suspected
+CR hits should be displayed). In this example, a total of 138 suspected CR
+hits have been identified, as indicated in the plot title.
+
+.. image:: _static/crmasks/mediancr_identified_cr.png
+   :width: 100%
+   :alt: example of pixels affected by two cosmic rays in a group of 3 exposures
+
+The first row shows the three individual exposures available in this example.
+In the second row, the left image presents the simple median combination, the
+center image shows the pixels detected as affected by two cosmic rays
+(surrounded by a 1-pixel-wide border), and the right image displays the median
+combination with the affected pixels replaced by the minimum value from the
+individual exposures.
+
+Detecting cosmic rays in the mean combination
+---------------------------------------------
+
+After the detection of suspected double cosmic rays in the median
+combination, the program proceeds to detect suspected cosmic rays in the
+mean combination. Note that this ``mean2d`` image contains the CR of all the
+individual exposures.
+
+The resulting diagnostic diagram is shown below,
+where the red crosses indicate the pixels that are suspected of having been
+affected by a cosmic ray in the combined exposure.
+
+.. image:: _static/crmasks/diagnostic_meancr.png
+   :width: 100%
+   :alt: diagnostic diagram for mean
+
+
+Detecting cosmic rays in the individual exposures
+-------------------------------------------------
+
+The program also generates diagnostic diagrams for each individual exposure.
+
+.. image:: _static/crmasks/diagnostic_crmask1.png
+   :width: 30%
+   :alt: diagnostic diagram for first individual exposure
+
+.. image:: _static/crmasks/diagnostic_crmask2.png
+   :width: 30%
+   :alt: diagnostic diagram for second individual exposure
+
+.. image:: _static/crmasks/diagnostic_crmask3.png
+   :width: 30%
+   :alt: diagnostic diagram for third individual exposure
+
+Output file ``crmasks.fits``
+----------------------------
+
+The output file ``crmasks.fits`` is generated in the *results* subdirectory, 
+and contains several extensions:
+
+.. code-block:: console
+
+   (megara) $ cd obsid8_LcbImage_LR-R_crmasks_results
+   (megara) $ fitsinfo crmasks.fits
+   Filename: crmasks.fits
+   No.    Name      Ver    Type      Cards   Dimensions   Format
+     0  PRIMARY       1 PrimaryHDU     121   ()      
+     1  MEDIANCR      1 ImageHDU         8   (4096, 4112)   uint8   
+     2  MEANCRT       1 ImageHDU         8   (4096, 4112)   uint8   
+     3  CRMASK1       1 ImageHDU         8   (4096, 4112)   uint8   
+     4  CRMASK2       1 ImageHDU         8   (4096, 4112)   uint8   
+     5  CRMASK3       1 ImageHDU         8   (4096, 4112)   uint8   
+
+Note the primary HDU only contains keywords with information concerning
+the parameters used to generate the masks.
+
+Do not forget to copy the file ``crmasks.fits`` to the `data/` subdirectory
+before running the MEGARA DRP to generate the reduced scientific result.
+
+.. code-block:: console
+
+   (megara) $ cp crmasks.fits ../data/
+
+Additional program parameters
+-----------------------------
+
+The program that generates the CR masks assumes several default values for
+the relevant parameters. These parameters can be modified by setting their
+values in requirements section of the YAML file.
 
 - ``gain``: detector gain (electron/ADU). Although the MEGARA detector
   exhibits two different gains (1.60 and 1.73; one value for each detector
@@ -172,19 +419,10 @@ mediancr``, some additional parameters must also be provided under the
   negative value indicates that all the suspected double CR are displayed. This
   option is only used if ``plots`` is True.
 
-Pixels suspected of having been affected by cosmic rays in two of the
-available exposures are grouped when they form a connected cluster. These are
-then sorted using the detection criteria, so they can be displayed in order,
-starting with the pixels most likely to have been affected by two cosmic rays.
-For each case, a figure like the one shown below is generated.
+Applying the masks
+==================
 
-.. image:: _static/mediancr/mediancr_identified_cr.png
-   :width: 100%
-   :alt: example of pixels affected by two cosmic rays in a group of 3 exposures
-
-The first row shows the three individual exposures available in this example.
-In the second row, the left image presents the simple median combination, the
-center image shows the pixels detected as affected by two cosmic rays
-(surrounded by a 1-pixel-wide border), and the right image displays the median
-combination with the affected pixels replaced by the minimum value from the
-individual exposures.
+**The signal in the suspected pixels is replaced, in the** ``median2d``
+**image, by the corresponding** ``min2d`` **value.** This means that the
+resulting image is identical to ``median2d``, except for those corrected
+pixels.
